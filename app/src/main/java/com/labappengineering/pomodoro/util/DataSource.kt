@@ -17,9 +17,13 @@ interface DataSource<T> {
 
     fun getEntities(callback: LoadEntitiesCallback<T>)
 
-    fun getEntity(taskId: String, callback: GetEntityCallback<T>)
+    fun getEntity(entityId: String, callback: GetEntityCallback<T>)
 
-    fun saveEntity(task: T)
+    fun saveEntity(entity: T)
+
+    fun updateEntityById(taskId: String)
+
+    fun updateEntity(entity: T)
 
     fun refreshEntities()
 
