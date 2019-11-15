@@ -1,5 +1,6 @@
 package com.labappengineering.pomodoro.alarm.data.source.local
 
+import androidx.annotation.VisibleForTesting
 import com.labappengineering.pomodoro.Alarm.data.source.AlarmsDataSource
 import com.labappengineering.pomodoro.alarm.data.Alarm
 import com.labappengineering.pomodoro.util.AppExecutors
@@ -40,24 +41,41 @@ class AlarmsLocalDataSource private constructor(
         }
     }
 
-    override fun updateEntityById(taskId: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun updateEntity(entity: Alarm) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun refreshEntities() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        appExecutors.diskIO.execute {
+            alarmsDao.updateAlarm(entity)
+        }
     }
 
     override fun deleteAllEntities() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        appExecutors.diskIO.execute {
+            alarmsDao.deleteAlarms()
+        }
     }
 
     override fun deleteEntity(entityId: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        appExecutors.diskIO.execute {
+            alarmsDao.deleteAlarmByID(entityId)
+        }
+    }
+
+    companion object {
+        private var INSTANCE: AlarmsLocalDataSource? = null
+
+        @JvmStatic
+        fun getInstance(appExecutors: AppExecutors, tasksDao: AlarmsDao): AlarmsLocalDataSource {
+            if (INSTANCE == null) {
+                synchronized(AlarmsLocalDataSource::javaClass) {
+                    INSTANCE = AlarmsLocalDataSource(appExecutors, tasksDao)
+                }
+            }
+            return INSTANCE!!
+        }
+
+        @VisibleForTesting
+        fun clearInstance() {
+            INSTANCE = null
+        }
     }
 
 }
