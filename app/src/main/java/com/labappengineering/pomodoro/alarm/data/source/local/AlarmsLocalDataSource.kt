@@ -9,7 +9,16 @@ class AlarmsLocalDataSource private constructor(
     val alarmsDao: AlarmsDao
 ) : AlarmsDataSource {
     override fun getAlarms(callback: AlarmsDataSource.LoadAlarmsCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        appExecutors.diskIO.execute{
+            val alarms = alarmsDao.getAlarms()
+            appExecutors.mainThread.execute {
+                if(alarms.isEmpty()) {
+                    callback.onDataNotAvailable()
+                } else{
+                    callback.onAlarmsLoaded(alarms)
+                }
+            }
+        }
     }
 
     override fun getAlarm(alarmId: String, callback: AlarmsDataSource.GetAlarmCallback) {
