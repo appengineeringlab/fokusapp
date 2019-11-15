@@ -21,7 +21,7 @@ interface DataSource<T> {
 
     fun saveEntity(entity: T)
 
-    fun updateEntityById(taskId: String)
+    fun updateEntityById(entityId: String)
 
     fun updateEntity(entity: T)
 
