@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity
+@Entity(tableName = "alarms")
 data class Alarm @JvmOverloads constructor(
     @PrimaryKey @ColumnInfo(name = "_id") var id: String = UUID.randomUUID().toString(),
     @ColumnInfo(name = "volume") var volume: Boolean = true,
