@@ -1,23 +1,12 @@
 package com.labappengineering.pomodoro.util
 
+import androidx.lifecycle.LiveData
+
 interface DataSource<T> {
-    interface LoadEntitiesCallback<T> {
 
-        fun onEntitiesLoaded(entities: List<T>)
+    fun getEntities() : LiveData<List<T>>
 
-        fun onDataNotAvailable()
-    }
-
-    interface GetEntityCallback<T> {
-
-        fun onEntityLoaded(entity: T)
-
-        fun onDataNotAvailable()
-    }
-
-    fun getEntities(callback: LoadEntitiesCallback<T>)
-
-    fun getEntity(entityId: String, callback: GetEntityCallback<T>)
+    fun getEntity(entityId: String): LiveData<T>
 
     fun saveEntity(entity: T)
 
