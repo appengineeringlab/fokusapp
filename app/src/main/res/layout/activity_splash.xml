@@ -4,15 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash_background"
     tools:context=".splash.SplashActivity">
 
+
     <TextView
+        android:id="@+id/splash_tv_welcome_to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:text="Welcome to"
+        app:fontFamily="sans-serif-light"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="56sp"
+        android:layout_marginTop="128dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/splash_tv_pomodoroapp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fontFamily="sans-serif-black"
+        android:text="pomodorapp"
+        android:textColor="@color/colorAccent"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splash_tv_welcome_to" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/splash_mb_go"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="GO"
+        android:layout_marginTop="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/colorAccent"
+        app:fontFamily="sans-serif-black"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/splash_tv_pomodoroapp" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
