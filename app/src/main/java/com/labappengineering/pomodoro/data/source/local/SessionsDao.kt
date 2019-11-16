@@ -13,15 +13,15 @@ interface SessionsDao {
     fun getSessionById(sessionId: String): LiveData<Session?>
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSession(session: Session)
+    suspend fun insertSession(session: Session)
     
     @Update
-    fun updateSession(session: Session): Int
+    suspend fun updateSession(session: Session): Int
 
     @Query("DELETE FROM Sessions WHERE _id = :sessionId")
-    fun deleteSessionById(sessionId: String): Int
+    suspend fun deleteSessionById(sessionId: String): Int
 
     @Query("DELETE FROM Sessions")
-    fun deleteSessions()
+    suspend fun deleteSessions()
 
 }

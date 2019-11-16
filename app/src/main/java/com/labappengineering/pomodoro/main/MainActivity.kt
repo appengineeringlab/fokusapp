@@ -9,11 +9,13 @@ import android.os.CountDownTimer
 import android.widget.Toast
 import com.labappengineering.pomodoro.R
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
     private var timeCountInMilliSeconds = (1 * 60000).toLong()
-
+    @Inject
+    lateinit var sessionsViewModel : SessionsViewModel
     private enum class TimerStatus {
         STARTED,
         STOPPED
