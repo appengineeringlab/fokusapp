@@ -5,11 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.labappengineering.pomodoro.Alarm.data.source.AlarmsDataSource
 import com.labappengineering.pomodoro.alarm.data.Alarm
-import com.labappengineering.pomodoro.util.AppExecutors
-import com.labappengineering.pomodoro.util.DataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class AlarmsLocalDataSource private constructor(
@@ -22,16 +19,16 @@ class AlarmsLocalDataSource private constructor(
     override fun getEntities(): LiveData<List<Alarm>> {
         var alarmsLiveData: LiveData<List<Alarm>> = MutableLiveData<List<Alarm>>()
         runBlocking {
-            val getData  = async(Dispatchers.IO) {
+            val getDataJob  = async(Dispatchers.IO) {
                 val alarms = alarmsDao.getAlarms()
                 returnData(alarms)
             }
 
-            val updateData = async(Dispatchers.Main) {
-                alarmsLiveData = getData.await()
+            val updateDataJob = async(Dispatchers.Main) {
+                alarmsLiveData = getDataJob.await()
             }
             runBlocking {
-                updateData.await()
+                updateDataJob.await()
             }
         }
 
@@ -41,12 +38,17 @@ class AlarmsLocalDataSource private constructor(
 
     override fun getEntity(entityId: String): LiveData<Alarm> {
         var alarmLiveData: LiveData<Alarm> = MutableLiveData<Alarm>()
-        appExecutors.diskIO.execute {
-            val alarm = alarmsDao.getAlarmById(entityId)
-            appExecutors.mainThread.execute {
-                if (alarm != null){
-                    alarmLiveData = alarm!!
-                }
+        runBlocking {
+            val getDataJob  = async(Dispatchers.IO) {
+                val alarm = alarmsDao.getAlarmById(entityId)
+                returnData(alarm)
+            }
+
+            val updateDataJob = async(Dispatchers.Main) {
+                alarmLiveData = getDataJob.await()!!
+            }
+            runBlocking {
+                updateDataJob.await()
             }
         }
         return alarmLiveData
@@ -55,38 +57,49 @@ class AlarmsLocalDataSource private constructor(
 
 
     override fun saveEntity(entity: Alarm) {
-        val deferred = async(Dispatchers.IO) {
-            println("${Thread.currentThread()} has run.")
-        }
-        appExecutors.diskIO.execute {
+        runBlocking {
+            val saveJob = async(Dispatchers.IO) {
+                alarmsDao.insertAlarm(entity)
+            }
+
             runBlocking {
-                val job = launch(Dispatchers.IO) {
-                    alarmsDao.insertAlarm(entity)
-                }
+                saveJob.await()
             }
         }
     }
 
     override fun updateEntity(entity: Alarm) {
-        appExecutors.diskIO.execute {
-            runBlocking {
+        runBlocking {
+            val saveJob = async(Dispatchers.IO) {
                 alarmsDao.updateAlarm(entity)
+            }
+
+            runBlocking {
+                saveJob.await()
             }
         }
     }
 
     override fun deleteAllEntities() {
-        appExecutors.diskIO.execute {
-            runBlocking {
+        runBlocking {
+            val saveJob = async(Dispatchers.IO) {
                 alarmsDao.deleteAlarms()
+            }
+
+            runBlocking {
+                saveJob.await()
             }
         }
     }
 
     override fun deleteEntity(entityId: String) {
-        appExecutors.diskIO.execute {
-            runBlocking {
+        runBlocking {
+            val saveJob = async(Dispatchers.IO) {
                 alarmsDao.deleteAlarmByID(entityId)
+            }
+
+            runBlocking {
+                saveJob.await()
             }
         }
     }
@@ -95,10 +108,10 @@ class AlarmsLocalDataSource private constructor(
         private var INSTANCE: AlarmsLocalDataSource? = null
 
         @JvmStatic
-        fun getInstance(appExecutors: AppExecutors, tasksDao: AlarmsDao): AlarmsLocalDataSource {
+        fun getInstance(tasksDao: AlarmsDao): AlarmsLocalDataSource {
             if (INSTANCE == null) {
                 synchronized(AlarmsLocalDataSource::javaClass) {
-                    INSTANCE = AlarmsLocalDataSource(appExecutors, tasksDao)
+                    INSTANCE = AlarmsLocalDataSource(tasksDao)
                 }
             }
             return INSTANCE!!
