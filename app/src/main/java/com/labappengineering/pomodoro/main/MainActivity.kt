@@ -6,43 +6,64 @@ import android.view.Menu
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.appcompat.view.menu.MenuBuilder
 import android.os.CountDownTimer
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.labappengineering.pomodoro.R
 import com.labappengineering.pomodoro.data.Session
+import com.labappengineering.pomodoro.main.timer.StartedState
+import com.labappengineering.pomodoro.main.timer.StoppedState
+import com.labappengineering.pomodoro.main.timer.TimerStateContext
+import com.labappengineering.pomodoro.util.Converters
 import dagger.android.AndroidInjection
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
-    private var timeCountInMilliSeconds = (1 * 60000).toLong()
+
     @Inject
     lateinit var sessionsViewModel : SessionsViewModel
 
-    private lateinit var session: LiveData<Session>
-
-//    init {
-//        // session.value = sessionsViewModel.getAllSessions().value!![0]
-//    }
-    private enum class TimerStatus {
-        STARTED,
-        STOPPED
-    }
-
-    private var timerStatus = TimerStatus.STOPPED
-
-    private var countDownTimer: CountDownTimer? = null
-
+    private lateinit var sessions: LiveData<List<Session>>
+    private var sessionLiveData: MutableLiveData<Session> = MutableLiveData<Session>()
+    private lateinit var session: Session
+    val widgets = ArrayList<View>(3)
+    var timerStateContext: TimerStateContext? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        AndroidInjection.inject(this)
-        setSupportActionBar(main_bap)
 
-        main_fab.setOnClickListener {
-            startStop()
-        }
+        AndroidInjection.inject(this)
+
+        setSupportActionBar(main_bap)
+        main_fab.isEnabled = false
+
+
+        widgets.add(main_progress_bar_circle)
+        widgets.add(main_tv_time)
+
+
+        sessions = sessionsViewModel.getAllSessions()
+        sessions.observe(this, Observer { sessionsList ->
+            if(sessionsList != null && sessionsList.isNotEmpty()){
+                sessionLiveData.value = sessionsList[0]
+            }
+        })
+        sessionLiveData.observe(this, Observer { sess ->
+            session = sess
+            main_fab.isEnabled = true
+            main_tv_time.text = Converters.hmsTimeFormatter(
+                Converters.minutesToMilliseconds(session.length)
+            )
+            timerStateContext = TimerStateContext(widgets, session)
+            main_fab.setOnClickListener {
+                timerStateContext!!.doAction()
+            }
+        })
+
     }
 
 
@@ -58,148 +79,5 @@ class MainActivity : AppCompatActivity() {
 
         return true
     }
-
-
-    /**
-     * method to reset count down timer
-     */
-    private fun reset() {
-        stopCountDownTimer()
-        startCountDownTimer()
-    }
-
-
-    /**
-     * method to start and stop count down timer
-     */
-    private fun startStop() {
-        if (timerStatus === TimerStatus.STOPPED) {
-
-            // call to initialize the timer values
-            setTimerValues()
-            // call to initialize the progress bar values
-            setProgressBarValues()
-            // showing the reset icon
-            // TODO: Change fab state
-            main_et_minute.isEnabled = false
-            // changing the timer status to started
-            timerStatus = TimerStatus.STARTED
-            // call to start the count down timer
-            startCountDownTimer()
-
-        } else {
-
-            // TODO: Change fab state
-            // making edit text editable
-            main_et_minute.isEnabled = true
-            // changing the timer status to stopped
-            timerStatus = TimerStatus.STOPPED
-            stopCountDownTimer()
-
-        }
-
-    }
-
-    /**
-     * method to initialize the values for count down timer
-     */
-    private fun setTimerValues() {
-        var time = 0
-        if (!main_et_minute.text.toString().isEmpty()) {
-            // fetching value from edit text and type cast to integer
-            time = Integer.parseInt(main_et_minute.text.toString().trim())
-        } else {
-            // toast message to fill edit text
-            Toast.makeText(
-                applicationContext,
-                "min",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-        // assigning values after converting to milliseconds
-        timeCountInMilliSeconds = (time * 60 * 1000).toLong()
-    }
-
-    /**
-     * method to start count down timer
-     */
-    private fun startCountDownTimer() {
-
-        countDownTimer = object : CountDownTimer(timeCountInMilliSeconds, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-
-                main_tv_time.text = hmsTimeFormatter(millisUntilFinished)
-
-                main_progress_bar_circle.progress = (millisUntilFinished / 1000).toInt()
-
-            }
-
-            override fun onFinish() {
-
-                main_tv_time.setText(hmsTimeFormatter(timeCountInMilliSeconds))
-                // call to initialize the progress bar values
-                setProgressBarValues()
-                // TODO:
-                // hiding the reset icon
-                // changing stop icon to start icon
-                // making edit text editable
-                main_et_minute.isEnabled = true
-                // changing the timer status to stopped
-                timerStatus = TimerStatus.STOPPED
-            }
-
-        }.start()
-        countDownTimer!!.start()
-    }
-
-    /**
-     * method to stop count down timer
-     */
-    private fun stopCountDownTimer() {
-        countDownTimer!!.cancel()
-    }
-
-    /**
-     * method to set circular progress bar values
-     */
-    private fun setProgressBarValues() {
-
-        main_progress_bar_circle.max = (timeCountInMilliSeconds / 1000L).toInt()
-        main_progress_bar_circle.progress = (timeCountInMilliSeconds / 1000L).toInt()
-    }
-
-
-    /**
-     * method to convert millisecond to time format
-     *
-     * @param milliSeconds
-     * @return HH:mm:ss time formatted string
-     */
-    private fun hmsTimeFormatter(milliSeconds: Long): String {
-
-        return String.format(
-            "%02d:%02d:%02d",
-            TimeUnit.MILLISECONDS.toHours(milliSeconds),
-            TimeUnit.MILLISECONDS.toMinutes(milliSeconds) - TimeUnit.HOURS.toMinutes(
-                TimeUnit.MILLISECONDS.toHours(
-                    milliSeconds
-                )
-            ),
-            TimeUnit.MILLISECONDS.toSeconds(milliSeconds) - TimeUnit.MINUTES.toSeconds(
-                TimeUnit.MILLISECONDS.toMinutes(
-                    milliSeconds
-                )
-            )
-        )
-    }
-
-    private fun getSession(): Session {
-        if(session.value != null){
-            return session.value!!
-        } else {
-            return Session()
-        }
-    }
-
 
 }
