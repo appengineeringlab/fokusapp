@@ -18,25 +18,46 @@ class StartedState(
         var progressBar: ProgressBar? = null
         var textView: TextView? = null
         if(stateCountDownTimer.countDownTimer == null) {
-            setTimerValues(session, stateCountDownTimer)
-            for (view in widgets){
-                if (view is ProgressBar){
-                    progressBar = view
-                    continue
-                }
-                if(view is TextView){
-                    textView = view
-                }
-            }
-            setProgressBarValues(progressBar!!, stateCountDownTimer)
+
+            progressBar = findProgressBar(widgets)
+            textView = findTextView(widgets)
+
+            resetProgressBarUI(progressBar!!, textView!!, stateCountDownTimer)
             startCountDownTimer(progressBar!!, stateCountDownTimer, textView!!)
         } else {
+            progressBar = findProgressBar(widgets)
+            textView = findTextView(widgets)
+            resetProgressBarUI(progressBar!!, textView!!, stateCountDownTimer)
             timerStateContext.currentState = StoppedState(
                 timerStateContext,
                 widgets,
                 session)
             (timerStateContext.currentState as StoppedState).doAction()
         }
+    }
+
+    private fun  findProgressBar(widgets: List<View>): ProgressBar?{
+        for (view in widgets){
+            if (view is ProgressBar){
+                return view
+            }
+        }
+        return null
+    }
+
+    private fun  findTextView(widgets: List<View>): TextView?{
+        for (view in widgets){
+            if (view is TextView){
+                return view
+            }
+        }
+        return null
+    }
+
+    private fun resetProgressBarUI(progressBar: ProgressBar, textView: TextView, stateCountDownTimer: StateCountDownTimer){
+        setTimerValues(session, stateCountDownTimer)
+        setProgressBarValues(progressBar!!, stateCountDownTimer)
+        textView.text = Converters.hmsTimeFormatter(stateCountDownTimer.timeCountInMilliSeconds)
     }
 
     private fun setProgressBarValues(progressBar: ProgressBar, stateCountDownTimer: StateCountDownTimer){
@@ -47,7 +68,7 @@ class StartedState(
     private fun setTimerValues(session: Session, stateCountDownTimer: StateCountDownTimer){
         var time = session.length
         // assigning values after converting to milliseconds
-        stateCountDownTimer.timeCountInMilliSeconds = (time * 60 * 1000).toLong()
+        stateCountDownTimer.timeCountInMilliSeconds = Converters.minutesToMilliseconds(time)
     }
     private fun startCountDownTimer(progressBar: ProgressBar, stateCountDownTimer: StateCountDownTimer, textView: TextView){
         stateCountDownTimer.countDownTimer = object : CountDownTimer(stateCountDownTimer.timeCountInMilliSeconds, 1000) {
