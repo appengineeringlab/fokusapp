@@ -7,7 +7,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import androidx.appcompat.view.menu.MenuBuilder
 import android.os.CountDownTimer
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import com.labappengineering.pomodoro.R
+import com.labappengineering.pomodoro.data.Session
+import dagger.android.AndroidInjection
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -16,6 +19,12 @@ class MainActivity : AppCompatActivity() {
     private var timeCountInMilliSeconds = (1 * 60000).toLong()
     @Inject
     lateinit var sessionsViewModel : SessionsViewModel
+
+    private lateinit var session: LiveData<Session>
+
+//    init {
+//        // session.value = sessionsViewModel.getAllSessions().value!![0]
+//    }
     private enum class TimerStatus {
         STARTED,
         STOPPED
@@ -28,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        AndroidInjection.inject(this)
         setSupportActionBar(main_bap)
 
         main_fab.setOnClickListener {
@@ -182,8 +191,14 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         )
+    }
 
-
+    private fun getSession(): Session {
+        if(session.value != null){
+            return session.value!!
+        } else {
+            return Session()
+        }
     }
 
 

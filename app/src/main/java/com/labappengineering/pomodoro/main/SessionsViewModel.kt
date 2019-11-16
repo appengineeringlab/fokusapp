@@ -7,7 +7,7 @@ import com.labappengineering.pomodoro.data.Session
 import com.labappengineering.pomodoro.data.source.SessionsRepository
 import kotlinx.coroutines.launch
 
-class SessionsViewModel(val sessionsRepository: SessionsRepository) : ViewModel(){
+open class SessionsViewModel(val sessionsRepository: SessionsRepository) : ViewModel(){
     fun getAllSessions() : LiveData<List<Session>> {
         return sessionsRepository.getEntities()
     }
