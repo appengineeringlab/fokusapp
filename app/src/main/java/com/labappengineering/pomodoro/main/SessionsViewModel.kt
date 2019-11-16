@@ -12,7 +12,23 @@ class SessionsViewModel(val sessionsRepository: SessionsRepository) : ViewModel(
         return sessionsRepository.getEntities()
     }
 
+    fun getSessionById(entityId: String) : LiveData<Session?>{
+        return sessionsRepository.getEntity(entityId)
+    }
+
     fun insert(session: Session) = viewModelScope.launch {
         sessionsRepository.saveEntity(session)
+    }
+
+    fun update(session: Session) = viewModelScope.launch {
+        sessionsRepository.updateEntity(session)
+    }
+
+    fun deleteAll() = viewModelScope.launch {
+        sessionsRepository.deleteAllEntitiess()
+    }
+
+    fun deleteById(entityId: String) = viewModelScope.launch {
+        sessionsRepository.deleteEntity(entityId)
     }
 }

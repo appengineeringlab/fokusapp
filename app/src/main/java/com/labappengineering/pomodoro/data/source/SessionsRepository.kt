@@ -6,7 +6,7 @@ import com.labappengineering.pomodoro.data.source.local.SessionsDao
 import com.labappengineering.pomodoro.util.DataSource
 
 class SessionsRepository(
-    val sessionsDao: SessionsDao
+    private val sessionsDao: SessionsDao
 ) : DataSource<Session> {
     override fun getEntities(): LiveData<List<Session>> {
         return sessionsDao.getSessions()
