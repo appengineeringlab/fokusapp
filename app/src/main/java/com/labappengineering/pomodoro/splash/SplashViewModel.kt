@@ -14,11 +14,11 @@ class SplashViewModel(sessionsRepository: SessionsRepository) : SessionsViewMode
     fun initializeDB(sessions : List<Session>){
         if(sessions == null ){
             viewModelScope.launch{
-                insert(Session()).join()
+                insert(Session(repetitions = 5, perDay = 12)).join()
             }
         } else if(sessions != null && sessions.isEmpty()) {
             viewModelScope.launch{
-                insert(Session()).join()
+                insert(Session(repetitions = 5, perDay = 12)).join()
             }
         }
 

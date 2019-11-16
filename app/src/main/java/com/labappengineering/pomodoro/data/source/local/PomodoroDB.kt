@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.labappengineering.pomodoro.data.Session
 
-@Database(entities = arrayOf(Session::class), version = 1)
+@Database(entities = arrayOf(Session::class), version = 2)
 abstract class PomodoroDB : RoomDatabase() {
     abstract fun sessionDao(): SessionsDao
 
@@ -21,8 +21,10 @@ abstract class PomodoroDB : RoomDatabase() {
             }
             synchronized(this) {
                 if(INSTANCE == null) {
-                    val instance = Room.databaseBuilder(context.applicationContext,
+                    val instance = Room
+                        .databaseBuilder(context.applicationContext,
                         PomodoroDB::class.java, "Pomodoro.db")
+                        .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance
                     return instance

@@ -14,6 +14,8 @@ data class Session @JvmOverloads constructor(
     var shortBreak: Int = 5,
     var longBreak: Int = 25,
     var repetitions: Int = 4,
-    var perDay: Int = 10
+    var perDay: Int = 10,
+    var currentRepetition: Int = 1,
+    var currentSessionPerDay: Int = 1
 ){
 }

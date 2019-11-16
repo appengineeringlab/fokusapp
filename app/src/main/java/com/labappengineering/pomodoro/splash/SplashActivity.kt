@@ -34,6 +34,7 @@ class SplashActivity : AppCompatActivity() {
             sessions = splashViewModel.getAllSessions()
 
             sessions.observe(this, Observer {
+//                splashViewModel.clearDB()
                 splashViewModel.initializeDB(it)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)

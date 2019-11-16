@@ -54,10 +54,7 @@ class MainActivity : AppCompatActivity() {
         })
         sessionLiveData.observe(this, Observer { sess ->
             session = sess
-            main_fab.isEnabled = true
-            main_tv_time.text = Converters.hmsTimeFormatter(
-                Converters.minutesToMilliseconds(session.length)
-            )
+            updateUI(sess)
             timerStateContext = TimerStateContext(widgets, session)
             main_fab.setOnClickListener {
                 timerStateContext!!.doAction()
@@ -66,6 +63,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun updateUI(session: Session) {
+        main_fab.isEnabled = true
+        main_tv_time.text = Converters.hmsTimeFormatter(
+            Converters.minutesToMilliseconds(session.length)
+        )
+        main_tv_repetitions.text = "${session.currentRepetition} / ${session.repetitions}"
+        main_tv_sessions.text = "${session.currentSessionPerDay} / ${session.perDay}"
+
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
