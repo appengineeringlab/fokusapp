@@ -4,6 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.MainActivity">
+    tools:context=".main.MainActivity"
+    android:background="@color/colorPrimaryDark">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/main_bap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:backgroundTint="@color/colorPrimaryDarker"
+            app:fabAlignmentMode="center"
+            app:navigationIcon="@drawable/ic_menu"/>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_timer"
+            style="@style/Widget.MaterialComponents.Button"
+            android:backgroundTint="@color/colorPrimary"
+            app:layout_anchor="@id/main_bap" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
