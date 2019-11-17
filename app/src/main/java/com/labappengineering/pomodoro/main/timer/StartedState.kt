@@ -66,7 +66,7 @@ class StartedState(
                     currentSession.currentRepetition += 1
                 }
 
-                session.value = currentSession
+                session.value = currentSession.copy()
                 timerStateContext.currentState = StoppedState(
                     timerStateContext,
                     widgets,
