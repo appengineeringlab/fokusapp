@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.labappengineering.pomodoro.data.Session
 
-@Database(entities = arrayOf(Session::class), version = 2)
+@Database(entities = arrayOf(Session::class), version = 3)
 abstract class PomodoroDB : RoomDatabase() {
     abstract fun sessionDao(): SessionsDao
 

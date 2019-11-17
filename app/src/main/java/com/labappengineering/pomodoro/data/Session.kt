@@ -16,7 +16,10 @@ data class Session @JvmOverloads constructor(
     var repetitions: Int = 4,
     var perDay: Int = 10,
     var currentRepetition: Int = 1,
-    var currentSessionPerDay: Int = 1
+    var currentSessionPerDay: Int = 1,
+    var sessionColor: String = "#1977F3",
+    var shortBreakColor: String = "#80bf00",
+    var longBreakColor: String = "#fc6b03"
 ){
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -32,6 +35,9 @@ data class Session @JvmOverloads constructor(
         if (perDay != other.perDay) return false
         if (currentRepetition != other.currentRepetition) return false
         if (currentSessionPerDay != other.currentSessionPerDay) return false
+        if (sessionColor != other.sessionColor) return false
+        if (shortBreakColor != other.shortBreakColor) return false
+        if (longBreakColor != other.longBreakColor) return false
 
         return true
     }
@@ -45,7 +51,9 @@ data class Session @JvmOverloads constructor(
         result = 31 * result + perDay
         result = 31 * result + currentRepetition
         result = 31 * result + currentSessionPerDay
+        result = 31 * result + sessionColor.hashCode()
+        result = 31 * result + shortBreakColor.hashCode()
+        result = 31 * result + longBreakColor.hashCode()
         return result
     }
-
 }

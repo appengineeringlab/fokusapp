@@ -4,6 +4,16 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.labappengineering.pomodoro.R
 import com.labappengineering.pomodoro.data.Session
+import android.graphics.drawable.ShapeDrawable
+
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.GradientDrawable
+import androidx.core.content.ContextCompat
+import android.graphics.drawable.ColorDrawable
+
+
+
 
 class TimerStateContext(
     private val widgets: List<View>,
@@ -67,7 +77,35 @@ class TimerStateContext(
         val textView = state.findTextView(widgets)
         val fab = state.findFab(widgets)
         fab!!.setImageResource(R.drawable.ic_timer)
+
+        if(state is SessionStartedState){
+            progressBar!!.progressDrawable.setColorFilter(Color.parseColor(session.value!!.sessionColor), PorterDuff.Mode.SRC_ATOP)
+        } else if (state is BreakStartedState && state.breakStartedStateType == BreakStartedStateType.LONG){
+            progressBar!!.progressDrawable.setColorFilter(Color.parseColor(session.value!!.longBreakColor), PorterDuff.Mode.SRC_ATOP)
+        }else if (state is BreakStartedState && state.breakStartedStateType == BreakStartedStateType.SHORT){
+            progressBar!!.progressDrawable.setColorFilter(Color.parseColor(session.value!!.shortBreakColor), PorterDuff.Mode.SRC_ATOP)
+        }
         state.resetProgressBarUI(progressBar!!, textView!!, stateCountDownTimer)
+    }
+
+    private fun changeDrawableColor(background: Any, color: String){
+        when (background) {
+            is ShapeDrawable -> {
+                // cast to 'ShapeDrawable'
+                val shapeDrawable = background as ShapeDrawable
+                shapeDrawable.paint.color = Color.parseColor(color)
+            }
+            is GradientDrawable -> {
+                // cast to 'GradientDrawable'
+                val gradientDrawable = background as GradientDrawable
+                gradientDrawable.setColor(Color.parseColor(color))
+            }
+            is ColorDrawable -> {
+                // alpha value may need to be set again after this call
+                val colorDrawable = background as ColorDrawable
+                colorDrawable.color = Color.parseColor(color)
+            }
+        }
     }
 
 }
