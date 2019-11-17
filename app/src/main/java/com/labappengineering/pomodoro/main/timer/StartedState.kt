@@ -14,7 +14,7 @@ import com.labappengineering.pomodoro.util.Converters
 class StartedState(
      timerStateContext: TimerStateContext,
      widgets: List<View>,
-     session: LiveData<Session>
+     session: MutableLiveData<Session>
 ) : ATimerState(timerStateContext, widgets, session){
 
     override fun doAction() {
@@ -66,7 +66,7 @@ class StartedState(
                     currentSession.currentRepetition += 1
                 }
 
-                (session as MutableLiveData).value = currentSession
+                session.value = currentSession
                 timerStateContext.currentState = StoppedState(
                     timerStateContext,
                     widgets,

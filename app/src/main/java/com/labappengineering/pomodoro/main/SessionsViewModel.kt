@@ -8,9 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.labappengineering.pomodoro.data.Session
 import com.labappengineering.pomodoro.data.source.SessionsRepository
 import com.labappengineering.pomodoro.main.timer.TimerStateContext
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 open class SessionsViewModel(val sessionsRepository: SessionsRepository) : ViewModel(){
@@ -33,8 +30,8 @@ open class SessionsViewModel(val sessionsRepository: SessionsRepository) : ViewM
         sessionsRepository.saveEntity(session)
     }
 
-    fun update(session: Session) = viewModelScope.launch(Dispatchers.IO) {
-        sessionsRepository.updateEntity(session)
+    fun update(session: Session) : Int {
+        return sessionsRepository.updateEntity(session)
     }
 
     fun deleteAll() = viewModelScope.launch {

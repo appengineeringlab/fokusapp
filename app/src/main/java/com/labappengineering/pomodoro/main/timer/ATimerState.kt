@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.labappengineering.pomodoro.data.Session
 import com.labappengineering.pomodoro.util.Converters
@@ -11,7 +12,8 @@ import com.labappengineering.pomodoro.util.Converters
 abstract class ATimerState(
     protected val timerStateContext: TimerStateContext,
     protected val widgets: List<View>,
-    protected val session: LiveData<Session>) : TimerState{
+    protected val session: MutableLiveData<Session>
+) : TimerState{
 
 
     protected fun  findProgressBar(widgets: List<View>): ProgressBar?{

@@ -4,11 +4,12 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.labappengineering.pomodoro.data.Session
 
 class TimerStateContext(
     widgets: List<View>,
-    session: LiveData<Session>
+    session: MutableLiveData<Session>
 ) {
     var currentState: TimerState? = null
     var stateCountDownTimer: StateCountDownTimer = StateCountDownTimer()

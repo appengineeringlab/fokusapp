@@ -9,6 +9,7 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import com.labappengineering.pomodoro.R
 import com.labappengineering.pomodoro.data.Session
 import com.labappengineering.pomodoro.main.timer.TimerStateContext
@@ -49,18 +50,19 @@ class MainActivity : AppCompatActivity() {
             }
         })
         sessionsViewModel.sessionLiveData.observe(this, Observer { sess ->
-            if(sessionsViewModel.sess != null){
-                runBlocking{
-                    sessionsViewModel.update(sess).join()
-                    if(sessionsViewModel.sess != sess) {
-                        sessionsViewModel.sess = sess
-                    }
-                    updateUI(sess)
+            if(sessionsViewModel.sess != null && sessionsViewModel.sess != sess) {
+                main_fab.isEnabled = false
+                sessionsViewModel.sess = sess.copy()
+                val res = sessionsViewModel.update(sessionsViewModel.sess!!)
+                if(res == 1) {
+                    updateUI(sessionsViewModel.sess!!)
                 }
-            } else {
-                sessionsViewModel.sess  = sess
+                Log.i("MainActivity", "Rezultat; $res")
+            } else if(sessionsViewModel.sess == null) {
+                sessionsViewModel.sess = sess.copy()
                 updateUI(sess)
-                sessionsViewModel.timerStateContext = TimerStateContext(widgets, sessionsViewModel.sessionLiveData)
+                sessionsViewModel.timerStateContext =
+                    TimerStateContext(widgets, sessionsViewModel.sessionLiveData)
                 main_fab.setOnClickListener {
                     sessionsViewModel.timerStateContext!!.doAction()
                 }

@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import com.labappengineering.pomodoro.data.Session
 import com.labappengineering.pomodoro.data.source.local.SessionsDao
 import com.labappengineering.pomodoro.util.DataSource
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 class SessionsRepository(
     private val sessionsDao: SessionsDao
@@ -20,9 +22,12 @@ class SessionsRepository(
         return sessionsDao.insertSession(entity)
     }
 
-    override suspend fun updateEntity(entity: Session) {
-        sessionsDao.updateSession(entity)
+    override fun updateEntity(entity: Session) = runBlocking {
+        val result = async { sessionsDao.updateSession(entity) }
+        result.await()
     }
+
+
 
     override suspend fun deleteAllEntitiess() {
         sessionsDao.deleteSessions()

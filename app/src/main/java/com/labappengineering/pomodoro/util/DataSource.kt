@@ -9,7 +9,7 @@ interface DataSource<T> {
 
     suspend fun saveEntity(entity: T)
 
-    suspend fun updateEntity(entity: T)
+    fun updateEntity(entity: T) : Int
 
     suspend fun deleteAllEntitiess()
 
