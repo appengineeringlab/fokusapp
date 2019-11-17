@@ -1,8 +1,9 @@
 package com.labappengineering.pomodoro.settings
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.text.InputType
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.labappengineering.pomodoro.R
@@ -40,21 +41,18 @@ class SettingsActivity : AppCompatActivity() {
                 createRecyclerView(settingsViewModel.sess!!)
             }
         })
-
+//        settingsViewModel.sessionItemLiveData.observe(this, Observer {
+//            settingsViewModel.sessionItemLiveData.value = ArrayList(it)
+//            settingsViewModel.sessionLiveData.value = sessionItemListToSession(ArrayList(it), settingsViewModel.sess!!)
+//        })
 
     }
 
     private fun createRecyclerView(sess: Session) {
         val settingsValues: LinkedHashMap<String, String> = LinkedHashMap(6)
-        settingsValues["length"] = sess.length.toString()
-        settingsValues["shortBreak"] = sess.shortBreak.toString()
-        settingsValues["longBreak"] = sess.longBreak.toString()
-        settingsValues["sessionColor"] = sess.sessionColor
-        settingsValues["shortBreakColor"] = sess.shortBreakColor
-        settingsValues["longBreakColor"] = sess.longBreakColor
         createSessionItem(sess)
         settings_rv_container.layoutManager = LinearLayoutManager(this)
-        settings_rv_container.adapter = SettingsAdapter(settingsValues, this) { retMap : HashMap<String, String> -> recyclerViewItemClicked(retMap) }
+        settings_rv_container.adapter = SettingsAdapter(settingsViewModel.sessionItemLiveData, this) { sessionItem : SessionItem -> recyclerViewItemClicked(sessionItem) }
         settings_rv_container.addItemDecoration(
             DividerItemDecoration(
                 this,
@@ -64,18 +62,51 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun createSessionItem(sess: Session) {
-        settingsViewModel.sessionItem = SessionItem(
-            sess.length,
-            sess.shortBreak,
-            sess.longBreak,
-            sess.sessionColor,
-            sess.shortBreakColor,
-            sess.longBreakColor)
-        settingsViewModel.sessionItemLiveData.value = settingsViewModel.sessionItem
+        val sessionItems = sessionToSessionItemList(sess)
+        settingsViewModel.sessionItemLiveData.value = sessionItems
+    }
+    private fun sessionToSessionItemList(sess: Session) : ArrayList<SessionItem> {
+        val sessionItems: ArrayList<SessionItem> = ArrayList(6)
+        sessionItems.add(SessionItem("length", sess.length.toString(), "Session Length"))
+        sessionItems.add(SessionItem("shortBreak", sess.shortBreak.toString(), "Short Break Length"))
+        sessionItems.add(SessionItem("longBreak", sess.longBreak.toString(), "Long Break Length"))
+        sessionItems.add(SessionItem("sessionColor", sess.sessionColor, "Session Timer Color"))
+        sessionItems.add(SessionItem("shortBreakColor", sess.shortBreakColor, "Short Break Timer Color"))
+        sessionItems.add(SessionItem("longBreakColor", sess.longBreakColor, "Long Break Timer Color"))
+        return sessionItems
     }
 
-    private fun recyclerViewItemClicked(retMap : HashMap<String, String> ) {
-
+    private fun sessionItemListToSession(sessionItemList: ArrayList<SessionItem>, sess: Session) : Session {
+        return sess.copy(
+            length = sessionItemList[0].value.toInt(),
+            shortBreak = sessionItemList[1].value.toInt(),
+            longBreak = sessionItemList[2].value.toInt(),
+            sessionColor = sessionItemList[3].value,
+            shortBreakColor = sessionItemList[4].value,
+            longBreakColor = sessionItemList[5].value
+        )
+    }
+    private fun recyclerViewItemClicked(sessionItem : SessionItem ) {
+//        val input = EditText(this)
+//        val lp = LinearLayout.LayoutParams(
+//            LinearLayout.LayoutParams.MATCH_PARENT,
+//            LinearLayout.LayoutParams.MATCH_PARENT
+//        )
+//        input.layoutParams = lp
+//        input.setText(sessionItem.value)
+//        input.inputType = InputType.TYPE_CLASS_NUMBER
+////        MaterialAlertDialogBuilder(this)
+////            .setTitle("${sessionItem.name}")
+////            .setMessage("${sessionItem.name}: ${sessionItem.value}")
+////            .setView(input)
+////            .setPositiveButton("Ok"
+////            ) { dialog, id ->
+////                Log.i("SettingsActivity", "${input.text}")
+////            }
+////            .show()
+        val fm = supportFragmentManager
+        val custom = SettingsDialog()
+        custom.show(fm, "")
     }
     private fun updateUI(sess: Session?) {
     }

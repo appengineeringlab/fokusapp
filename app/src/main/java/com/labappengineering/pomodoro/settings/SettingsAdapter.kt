@@ -13,9 +13,9 @@ import kotlinx.android.synthetic.main.settings_list_item.view.*
 
 
 
-class SettingsAdapter(val items: LinkedHashMap<String, String>,
+class SettingsAdapter(val items: MutableLiveData<List<SessionItem>>,
                       val context: Context,
-                      val clickListener: (HashMap<String, String>) -> Unit)
+                      val clickListener: (SessionItem) -> Unit)
     : RecyclerView.Adapter<ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.settings_list_item,
@@ -23,19 +23,13 @@ class SettingsAdapter(val items: LinkedHashMap<String, String>,
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return items.value!!.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var keyList: ArrayList<String> = ArrayList(items.size)
-        var valueList: ArrayList<String> = ArrayList(items.size)
-        val keys = items.keys.toCollection(keyList)
-        val values = items.values.toCollection(valueList)
-        holder.tv1.text = keys[position]
-        holder.tv2.text = values[position]
-//        val retMap = LinkedHashMap<String, String>()
-//        retMap[keys[position]] = values[position]
-//        holder.itemView.setOnClickListener { clickListener()}
+        holder.tv1.text = items.value!![position].name
+        holder.tv2.text = items.value!![position].value
+        holder.itemView.setOnClickListener { clickListener(items.value!![position])}
     }
 }
 
