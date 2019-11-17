@@ -5,7 +5,6 @@ import androidx.test.InstrumentationRegistry.getContext
 import androidx.test.runner.AndroidJUnit4
 
 import com.labappengineering.pomodoro.alarm.data.Alarm
-import com.labappengineering.pomodoro.util.PomodoroDatabase
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.junit.After
