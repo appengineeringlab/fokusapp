@@ -56,7 +56,6 @@ class TimerStateContext(
 
     fun decideStartingState(){
         if(breakFinished){
-            breakFinished = false
             currentState = SessionStartedState(
                 this,
                 widgets,

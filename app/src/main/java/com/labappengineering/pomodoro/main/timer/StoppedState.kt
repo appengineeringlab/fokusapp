@@ -15,7 +15,6 @@ class StoppedState(
         if(stateCountDownTimer.countDownTimer != null) {
             stateCountDownTimer.countDownTimer!!.cancel()
             stateCountDownTimer.countDownTimer = null
-
             timerStateContext.decideStartingState()
 
         }

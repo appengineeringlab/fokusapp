@@ -16,5 +16,8 @@ class SessionStartedState(
      widgets: List<View>,
      session: MutableLiveData<Session>
 ) : StartedState(timerStateContext, widgets, session){
-
+    override fun doAction() {
+        super.doAction()
+        timerStateContext.breakFinished = false
+    }
 }

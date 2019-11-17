@@ -20,6 +20,10 @@ class BreakStartedState(
     val breakStartedStateType: BreakStartedStateType
 ) : StartedState(timerStateContext, widgets, session) {
 
+    override fun doAction() {
+        super.doAction()
+        timerStateContext.breakFinished = true
+    }
 
     override fun startCountDownTimer(
         progressBar: ProgressBar,
