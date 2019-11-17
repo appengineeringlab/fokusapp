@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    tools:layout_editor_absoluteX="62dp"
+    tools:layout_editor_absoluteY="4dp"
+    android:layout_marginTop="24dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_item_data_left_column_wrapper"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="12dp"
+        android:layout_weight="0.5">
+
+        <TextView
+            android:id="@+id/settings_li_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/colorAccentDark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Session length"
+            android:fontFamily="sans-serif-light"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/settings_li_tv_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_li_tv_name"
+            android:fontFamily="sans-serif-black"
+            tools:text="25 minutes"
+            android:textSize="12sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -52,8 +52,7 @@ class BreakStartedState(
     }
 
     override fun setTimerValues(session: Session, stateCountDownTimer: StateCountDownTimer) {
-        var time = session.length
-        time = if(breakStartedStateType == BreakStartedStateType.LONG){
+        var time : Int = if(breakStartedStateType == BreakStartedStateType.LONG){
             session.longBreak
         } else {
             session.shortBreak

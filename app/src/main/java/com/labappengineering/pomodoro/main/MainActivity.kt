@@ -1,24 +1,25 @@
 package com.labappengineering.pomodoro.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
 import com.labappengineering.pomodoro.R
 import com.labappengineering.pomodoro.data.Session
 import com.labappengineering.pomodoro.main.timer.TimerStateContext
+import com.labappengineering.pomodoro.settings.SettingsActivity
 import com.labappengineering.pomodoro.util.Converters
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+
 import javax.inject.Inject
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -92,6 +93,18 @@ class MainActivity : AppCompatActivity() {
 
 
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.main_menu_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
 }

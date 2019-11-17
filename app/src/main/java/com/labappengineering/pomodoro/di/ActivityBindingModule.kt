@@ -3,6 +3,8 @@ package com.labappengineering.pomodoro.di
 
 import com.labappengineering.pomodoro.main.MainActivity
 import com.labappengineering.pomodoro.main.MainActivityModule
+import com.labappengineering.pomodoro.settings.SettingsActivity
+import com.labappengineering.pomodoro.settings.SettingsActivityModule
 import com.labappengineering.pomodoro.splash.SplashActivity
 import com.labappengineering.pomodoro.splash.SplashActivityModule
 import dagger.Module
@@ -16,4 +18,7 @@ abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector(modules = [SplashActivityModule::class])
     internal abstract fun splashActivity(): SplashActivity
+
+    @ContributesAndroidInjector(modules = [SettingsActivityModule::class])
+    internal abstract fun settingsActivity(): SettingsActivity
 }
