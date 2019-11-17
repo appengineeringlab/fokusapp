@@ -38,6 +38,19 @@
             android:textColor="@color/colorAccent"
             android:textSize="40sp" />
 
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="33dp"
+            android:layout_above="@+id/main_tv_time"
+            android:layout_alignStart="@+id/main_tv_time"
+            android:layout_alignLeft="@+id/main_tv_time"
+            android:layout_alignEnd="@+id/main_tv_time"
+            android:layout_alignRight="@+id/main_tv_time"
+            android:layout_marginBottom="-80dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textColor="@color/colorAccentDark"
+            android:text="Sound"></Switch>
     </RelativeLayout>
 
     <FrameLayout
