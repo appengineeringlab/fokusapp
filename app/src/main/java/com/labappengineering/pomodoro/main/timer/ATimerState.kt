@@ -16,7 +16,7 @@ abstract class ATimerState(
 ) : TimerState{
 
 
-    protected fun  findProgressBar(widgets: List<View>): ProgressBar?{
+    fun  findProgressBar(widgets: List<View>): ProgressBar?{
         for (view in widgets){
             if (view is ProgressBar){
                 return view
@@ -25,7 +25,7 @@ abstract class ATimerState(
         return null
     }
 
-    protected fun  findTextView(widgets: List<View>): TextView?{
+    fun  findTextView(widgets: List<View>): TextView?{
         for (view in widgets){
             if (view is TextView){
                 return view
@@ -34,7 +34,7 @@ abstract class ATimerState(
         return null
     }
 
-    protected fun findFab(widgets: List<View>): FloatingActionButton? {
+    fun findFab(widgets: List<View>): FloatingActionButton? {
         for (view in widgets){
             if (view is FloatingActionButton){
                 return view
@@ -43,7 +43,7 @@ abstract class ATimerState(
         return null
     }
 
-    protected fun resetProgressBarUI(progressBar: ProgressBar, textView: TextView, stateCountDownTimer: StateCountDownTimer){
+    fun resetProgressBarUI(progressBar: ProgressBar, textView: TextView, stateCountDownTimer: StateCountDownTimer){
         setTimerValues(session.value!!, stateCountDownTimer)
         setProgressBarValues(progressBar, stateCountDownTimer)
         textView.text = Converters.hmsTimeFormatter(stateCountDownTimer.timeCountInMilliSeconds)
@@ -54,7 +54,7 @@ abstract class ATimerState(
         progressBar.progress = (stateCountDownTimer.timeCountInMilliSeconds / 1000L).toInt()
     }
 
-    private fun setTimerValues(session: Session, stateCountDownTimer: StateCountDownTimer){
+    protected open fun setTimerValues(session: Session, stateCountDownTimer: StateCountDownTimer){
         var time = session.length
         // assigning values after converting to milliseconds
         stateCountDownTimer.timeCountInMilliSeconds = Converters.minutesToMilliseconds(time)
