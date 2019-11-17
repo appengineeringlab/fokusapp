@@ -71,6 +71,7 @@ class TimerStateContext(
         }
     }
 
+    @Suppress("DEPRECATION")
     fun resetProgresBarUI(state: ATimerState){
         val progressBar = state.findProgressBar(widgets)
         val textView = state.findTextView(widgets)
@@ -91,17 +92,17 @@ class TimerStateContext(
         when (background) {
             is ShapeDrawable -> {
                 // cast to 'ShapeDrawable'
-                val shapeDrawable = background as ShapeDrawable
+                val shapeDrawable = background
                 shapeDrawable.paint.color = Color.parseColor(color)
             }
             is GradientDrawable -> {
                 // cast to 'GradientDrawable'
-                val gradientDrawable = background as GradientDrawable
+                val gradientDrawable = background
                 gradientDrawable.setColor(Color.parseColor(color))
             }
             is ColorDrawable -> {
                 // alpha value may need to be set again after this call
-                val colorDrawable = background as ColorDrawable
+                val colorDrawable = background
                 colorDrawable.color = Color.parseColor(color)
             }
         }
