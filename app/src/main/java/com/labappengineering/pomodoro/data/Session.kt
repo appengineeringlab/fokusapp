@@ -18,4 +18,34 @@ data class Session @JvmOverloads constructor(
     var currentRepetition: Int = 1,
     var currentSessionPerDay: Int = 1
 ){
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Session
+
+        if (id != other.id) return false
+        if (length != other.length) return false
+        if (shortBreak != other.shortBreak) return false
+        if (longBreak != other.longBreak) return false
+        if (repetitions != other.repetitions) return false
+        if (perDay != other.perDay) return false
+        if (currentRepetition != other.currentRepetition) return false
+        if (currentSessionPerDay != other.currentSessionPerDay) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + length
+        result = 31 * result + shortBreak
+        result = 31 * result + longBreak
+        result = 31 * result + repetitions
+        result = 31 * result + perDay
+        result = 31 * result + currentRepetition
+        result = 31 * result + currentSessionPerDay
+        return result
+    }
+
 }

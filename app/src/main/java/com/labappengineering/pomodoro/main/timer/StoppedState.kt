@@ -1,13 +1,14 @@
 package com.labappengineering.pomodoro.main.timer
 
 import android.view.View
+import androidx.lifecycle.LiveData
 import com.labappengineering.pomodoro.R
 import com.labappengineering.pomodoro.data.Session
 
 class StoppedState(
     timerStateContext: TimerStateContext,
     widgets: List<View>,
-    session: Session
+    session: LiveData<Session>
 ) : ATimerState(timerStateContext, widgets, session) {
     override fun doAction() {
         val stateCountDownTimer =timerStateContext.stateCountDownTimer

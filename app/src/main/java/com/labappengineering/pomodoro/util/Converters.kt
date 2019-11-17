@@ -31,7 +31,7 @@ class Converters {
 
         @JvmStatic
         fun minutesToMilliseconds(time: Int) : Long{
-            return (time * 60000).toLong()
+            return (time * 2000).toLong() // TODO: return back to 60000
         }
     }
 }

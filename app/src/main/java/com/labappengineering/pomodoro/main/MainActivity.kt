@@ -1,24 +1,22 @@
 package com.labappengineering.pomodoro.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
-import kotlinx.android.synthetic.main.activity_main.*
-import androidx.appcompat.view.menu.MenuBuilder
-import android.os.CountDownTimer
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.labappengineering.pomodoro.R
 import com.labappengineering.pomodoro.data.Session
-import com.labappengineering.pomodoro.main.timer.StartedState
-import com.labappengineering.pomodoro.main.timer.StoppedState
 import com.labappengineering.pomodoro.main.timer.TimerStateContext
 import com.labappengineering.pomodoro.util.Converters
 import dagger.android.AndroidInjection
-import java.util.concurrent.TimeUnit
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 
@@ -27,11 +25,8 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var sessionsViewModel : SessionsViewModel
 
-    private lateinit var sessions: LiveData<List<Session>>
-    private var sessionLiveData: MutableLiveData<Session> = MutableLiveData<Session>()
-    private lateinit var session: Session
     val widgets = ArrayList<View>(3)
-    var timerStateContext: TimerStateContext? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -47,18 +42,28 @@ class MainActivity : AppCompatActivity() {
         widgets.add(main_fab)
 
 
-        sessions = sessionsViewModel.getAllSessions()
-        sessions.observe(this, Observer { sessionsList ->
+        sessionsViewModel.sessionsLiveData = sessionsViewModel.getAllSessions()
+        sessionsViewModel.sessionsLiveData.observe(this, Observer { sessionsList ->
             if(sessionsList != null && sessionsList.isNotEmpty()){
-                sessionLiveData.value = sessionsList[0]
+                sessionsViewModel.sessionLiveData.value = sessionsList[0]
             }
         })
-        sessionLiveData.observe(this, Observer { sess ->
-            session = sess
-            updateUI(sess)
-            timerStateContext = TimerStateContext(widgets, session)
-            main_fab.setOnClickListener {
-                timerStateContext!!.doAction()
+        sessionsViewModel.sessionLiveData.observe(this, Observer { sess ->
+            if(sessionsViewModel.sess != null){
+                runBlocking{
+                    sessionsViewModel.update(sess).join()
+                    if(sessionsViewModel.sess != sess) {
+                        sessionsViewModel.sess = sess
+                    }
+                    updateUI(sess)
+                }
+            } else {
+                sessionsViewModel.sess  = sess
+                updateUI(sess)
+                sessionsViewModel.timerStateContext = TimerStateContext(widgets, sessionsViewModel.sessionLiveData)
+                main_fab.setOnClickListener {
+                    sessionsViewModel.timerStateContext!!.doAction()
+                }
             }
         })
 

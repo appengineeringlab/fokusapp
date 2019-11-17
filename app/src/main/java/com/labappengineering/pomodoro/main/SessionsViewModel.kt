@@ -1,13 +1,26 @@
 package com.labappengineering.pomodoro.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.labappengineering.pomodoro.data.Session
 import com.labappengineering.pomodoro.data.source.SessionsRepository
+import com.labappengineering.pomodoro.main.timer.TimerStateContext
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 open class SessionsViewModel(val sessionsRepository: SessionsRepository) : ViewModel(){
+
+    var sessionsLiveData: LiveData<List<Session>> = MutableLiveData()
+    var sessionLiveData: MutableLiveData<Session> = MutableLiveData()
+    var sess: Session? = null
+
+    var timerStateContext: TimerStateContext? = null
+
     fun getAllSessions() : LiveData<List<Session>> {
         return sessionsRepository.getEntities()
     }
@@ -20,7 +33,7 @@ open class SessionsViewModel(val sessionsRepository: SessionsRepository) : ViewM
         sessionsRepository.saveEntity(session)
     }
 
-    fun update(session: Session) = viewModelScope.launch {
+    fun update(session: Session) = viewModelScope.launch(Dispatchers.IO) {
         sessionsRepository.updateEntity(session)
     }
 

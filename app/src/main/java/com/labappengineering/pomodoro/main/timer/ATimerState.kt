@@ -3,6 +3,7 @@ package com.labappengineering.pomodoro.main.timer
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.lifecycle.LiveData
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.labappengineering.pomodoro.data.Session
 import com.labappengineering.pomodoro.util.Converters
@@ -10,7 +11,7 @@ import com.labappengineering.pomodoro.util.Converters
 abstract class ATimerState(
     protected val timerStateContext: TimerStateContext,
     protected val widgets: List<View>,
-    protected val session: Session) : TimerState{
+    protected val session: LiveData<Session>) : TimerState{
 
 
     protected fun  findProgressBar(widgets: List<View>): ProgressBar?{
@@ -41,8 +42,8 @@ abstract class ATimerState(
     }
 
     protected fun resetProgressBarUI(progressBar: ProgressBar, textView: TextView, stateCountDownTimer: StateCountDownTimer){
-        setTimerValues(session, stateCountDownTimer)
-        setProgressBarValues(progressBar!!, stateCountDownTimer)
+        setTimerValues(session.value!!, stateCountDownTimer)
+        setProgressBarValues(progressBar, stateCountDownTimer)
         textView.text = Converters.hmsTimeFormatter(stateCountDownTimer.timeCountInMilliSeconds)
     }
 
