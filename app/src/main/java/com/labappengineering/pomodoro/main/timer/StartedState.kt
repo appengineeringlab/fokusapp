@@ -1,5 +1,6 @@
 package com.labappengineering.pomodoro.main.timer
 
+import android.app.IntentService
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.ProgressBar
@@ -14,7 +15,7 @@ abstract class StartedState(
     timerStateContext: TimerStateContext,
     widgets: List<View>,
     session: MutableLiveData<Session>
-) : ATimerState(timerStateContext, widgets, session) {
+) : ATimerState(timerStateContext, widgets, session){
     override fun doAction() {
         val stateCountDownTimer = timerStateContext.stateCountDownTimer
         var progressBar: ProgressBar?
