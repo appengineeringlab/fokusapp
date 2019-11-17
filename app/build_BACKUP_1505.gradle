@@ -15,10 +15,23 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+<<<<<<< HEAD
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    android {
+        sourceSets {
+            String sharedTestDir = 'src/sharedTest/java'
+            test {
+                java.srcDir sharedTestDir
+            }
+            androidTest {
+                java.srcDir sharedTestDir
+=======
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+>>>>>>> feature/main_activity_layout_pomodoro_room
             }
         }
     }
@@ -104,11 +117,41 @@ dependencies {
     // Testing
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
 
+<<<<<<< HEAD
+    // Dependencies for local unit tests
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
+    testImplementation "android.arch.core:core-testing:$archTestingVersion"
 
+    // Dependencies for Android unit tests
+    androidTestImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
+    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$dexMakerVersion"
+
+    // Android Testing Support Library - Instrumented testing
+    androidTestImplementation "androidx.test:runner:$androidXTestVersion"
+    androidTestImplementation "androidx.test:rules:$androidXTestVersion"
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$espressoVersion"
+    implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
+
+    // Resolve conflicts between main and test APK:
+    androidTestImplementation "androidx.annotation:annotation:$androidXAnnotations"
+    androidTestImplementation "androidx.legacy:legacy-support-v4:$androidXLegacySupport"
+
+    androidTestImplementation ("com.android.support.test:runner:1.0.2") {
+        // exclude group: "com.android.support.test"
+        exclude group: "com.android.support"
+    }
+=======
     // DB viewer
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
     // recycler view
     implementation "com.android.support:recyclerview-v7:$rootProject.supportLibrary"
-
+>>>>>>> feature/main_activity_layout_pomodoro_room
 }

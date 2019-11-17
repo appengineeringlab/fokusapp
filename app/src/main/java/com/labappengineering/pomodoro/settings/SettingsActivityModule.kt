@@ -1,18 +1,21 @@
-package com.labappengineering.pomodoro.main
+package com.labappengineering.pomodoro.settings
 
 import android.content.Context
 import com.labappengineering.pomodoro.data.source.SessionsRepository
 import com.labappengineering.pomodoro.data.source.local.PomodoroDB
 import com.labappengineering.pomodoro.data.source.local.SessionsDao
+import com.labappengineering.pomodoro.main.SessionsViewModel
+import com.labappengineering.pomodoro.splash.SplashViewModel
 import dagger.Module
 import dagger.Provides
 
 @Module
-class MainActivityModule {
+class SettingsActivityModule {
     @Provides
-    fun sessionsViewModel(repository: SessionsRepository) : SessionsViewModel {
-        return SessionsViewModel(repository)
+    fun settingsViewModel(repository: SessionsRepository) : SettingsViewModel {
+        return SettingsViewModel(repository)
     }
+
 
     @Provides
     fun provideSessionsRepository(sessionsDao: SessionsDao) : SessionsRepository {
