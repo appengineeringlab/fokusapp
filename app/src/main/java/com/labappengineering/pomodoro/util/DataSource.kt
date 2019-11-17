@@ -6,13 +6,14 @@ interface DataSource<T> {
 
     fun getEntities() : LiveData<List<T>>
 
-    fun getEntity(entityId: String): LiveData<T>
+    fun getEntity(entityId: String) : LiveData<T?>
 
-    fun saveEntity(entity: T)
+    suspend fun saveEntity(entity: T)
 
-    fun updateEntity(entity: T)
+    fun updateEntity(entity: T) : Int
 
-    fun deleteAllEntities()
+    suspend fun deleteAllEntitiess()
 
-    fun deleteEntity(entityId: String)
+    suspend fun deleteEntity(entityId: String)
+
 }

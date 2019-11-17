@@ -31,20 +31,9 @@ ext {
     androidxArchVersion = '2.1.0'
     coreTestingVersion = "2.1.0"
     coroutines = '1.3.2'
-    materialVersion = "1.0.0"
-    androidXTestVersion = '1.1.1'
-    junitVersion = '4.12'
-    mockitoVersion = '2.8.9'
-    dexMakerVersion = '2.12.1'
-    espressoVersion = '3.1.1'
-    mockitoVersion = '2.8.9'
-    hamcrestVersion = '1.3'
-    archTestingVersion = '1.1.1'
-    androidXVersion = '1.0.0'
-    androidXTestVersion = '1.1.1'
-    androidXAnnotations = '1.0.1'
-    androidXLegacySupport = '1.0.0'
-    recyclerViewVersion = '1.0.0'
+    materialVersion = "1.1.0-alpha02"
+    supportLibrary = '28.0.0'
+
 }
 
 task clean(type: Delete) {
