@@ -10,7 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".paypal.PaypalActivity"></activity>
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".main.MainActivity" />
         <activity android:name=".splash.SplashActivity">

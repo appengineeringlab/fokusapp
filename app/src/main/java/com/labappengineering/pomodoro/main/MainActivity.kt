@@ -1,6 +1,7 @@
 package com.labappengineering.pomodoro.main
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
+import androidx.core.app.ShareCompat
 import androidx.lifecycle.Observer
 import com.labappengineering.pomodoro.R
 import com.labappengineering.pomodoro.data.Session
@@ -27,7 +29,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var sessionsViewModel : SessionsViewModel
 
     val widgets = ArrayList<View>(3)
-
+    private val PAYPAL_ME_URI = "https://www.paypal.me/appengineeringlab"
+    private val EMAIL = "labappengineering@gmail.com"
+    private val SUBJECT = "Contact from Pomodoro App"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -99,6 +103,24 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                return true
+            }
+            R.id.main_menu_donate -> {
+                val openURL = Intent(Intent.ACTION_VIEW)
+                openURL.data = Uri.parse(PAYPAL_ME_URI)
+                startActivity(openURL)
+                return true
+            }
+            R.id.main_menu_contact -> {
+
+            ShareCompat.IntentBuilder.from(this)
+                .setType("message/rfc822")
+                .addEmailTo(EMAIL)
+                .setSubject(SUBJECT)
+                .setText("")
+                //.setHtmlText(body) //If you are using HTML in your body text
+                .setChooserTitle("Choose Email App")
+                .startChooser()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
