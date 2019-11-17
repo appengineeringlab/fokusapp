@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         widgets.add(main_progress_bar_circle)
         widgets.add(main_tv_time)
+        widgets.add(main_fab)
 
 
         sessions = sessionsViewModel.getAllSessions()

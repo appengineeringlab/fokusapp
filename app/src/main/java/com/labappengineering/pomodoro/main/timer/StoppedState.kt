@@ -1,6 +1,7 @@
 package com.labappengineering.pomodoro.main.timer
 
 import android.view.View
+import com.labappengineering.pomodoro.R
 import com.labappengineering.pomodoro.data.Session
 
 class StoppedState(
@@ -13,6 +14,13 @@ class StoppedState(
         if(stateCountDownTimer.countDownTimer != null) {
             stateCountDownTimer.countDownTimer!!.cancel()
             stateCountDownTimer.countDownTimer = null
+
+            val progressBar = findProgressBar(widgets)
+            val textView = findTextView(widgets)
+            val fab = findFab(widgets)
+            fab!!.setImageResource(R.drawable.ic_timer)
+            resetProgressBarUI(progressBar!!, textView!!, stateCountDownTimer)
+
             timerStateContext.currentState = StartedState(
                 timerStateContext,
                 widgets,
