@@ -43,6 +43,10 @@ class SettingsActivity : AppCompatActivity() {
                 createRecyclerView(settingsViewModel.sess!!)
             }
         })
+        settings_btn_back.setOnClickListener {
+           finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        }
 //        settingsViewModel.sessionItemLiveData.observe(this, Observer {
 //            settingsViewModel.sessionItemLiveData.value = ArrayList(it)
 //            settingsViewModel.sessionLiveData.value = sessionItemListToSession(ArrayList(it), settingsViewModel.sess!!)
