@@ -51,8 +51,8 @@ class SettingsActivity : AppCompatActivity() {
             if(settingsViewModel.session != null && settingsViewModel.session != sess) {
                 settingsViewModel.session = sess.copy()
                 val itemList = sessionToSessionItemList(sess)
-                settingsViewModel.sessionItemLiveData.value = itemList
-
+                settings_rv_container.adapter = null
+                createRecyclerView(settingsViewModel.session!!)
             } else if(settingsViewModel.session == null) {
                 settingsViewModel.session = sess.copy()
                 createRecyclerView(settingsViewModel.session!!)
@@ -64,6 +64,8 @@ class SettingsActivity : AppCompatActivity() {
         }
         settingsViewModel.sessionItemLiveData.observe(this, Observer {
             settingsViewModel.update(sessionItemListToSession(it, settingsViewModel.session!!))
+
+
             Log.i("SettingsActivity", "Notifying ...")
         })
 
