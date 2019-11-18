@@ -21,31 +21,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/splash_tv_pomodoroapp"
+    <ImageView
+        android:id="@+id/splash_iv_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fontFamily="sans-serif-black"
-        android:text="pomodorapp"
-        android:textColor="@color/colorAccent"
-        android:textSize="36sp"
+        android:src="@drawable/logo"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splash_tv_welcome_to" />
+        app:layout_constraintTop_toBottomOf="@+id/splash_tv_welcome_to">
+
+    </ImageView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/splash_mb_go"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="GO"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="110dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:backgroundTint="@color/colorPrimary"
         android:textColor="@color/colorAccent"
         app:fontFamily="sans-serif-black"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/splash_tv_pomodoroapp" />
+        app:layout_constraintTop_toBottomOf="@+id/splash_iv_logo" />
 
 
 

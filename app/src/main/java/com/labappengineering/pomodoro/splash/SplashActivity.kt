@@ -51,6 +51,6 @@ class SplashActivity : AppCompatActivity() {
     private fun animateText() {
         val pushDownIn: Animation = AnimationUtils.loadAnimation(this, R.anim.push_down_in)
         splash_tv_welcome_to.startAnimation(pushDownIn)
-        splash_tv_pomodoroapp.startAnimation(pushDownIn)
+        splash_iv_logo.startAnimation(pushDownIn)
     }
 }
