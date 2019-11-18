@@ -8,8 +8,14 @@ import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.labappengineering.pomodoro.R
-import com.labappengineering.pomodoro.data.Session
+
 import kotlinx.android.synthetic.main.settings_list_item.view.*
+
+import com.flask.colorpicker.ColorPickerView
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder
+
+import android.widget.Toast
+
 
 
 
@@ -37,6 +43,34 @@ class SettingsAdapter(val items: MutableLiveData<List<SessionItem>>,
             holder.tv2.text = items.value!![position].value
         }
         holder.itemView.setOnClickListener { clickListener(items.value!![position])}
+        holder.fl.setOnClickListener{
+            ColorPickerDialogBuilder
+                .with(context)
+                .setTitle("Choose color")
+                .initialColor(Color.parseColor(items.value!![position].value))
+                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                .density(12)
+                .setOnColorSelectedListener { selectedColor ->
+                    Toast.makeText(context,
+                        "Selected color: 0x" + Integer.toHexString(
+                            selectedColor
+                        ),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                .setPositiveButton(
+                    "ok"
+                ) { dialog, selectedColor, allColors ->
+                    holder.fl.setBackgroundColor(selectedColor)
+                    items.value!![position].value =
+                        String.format("#%06X", 0xFFFFFF and selectedColor)
+                }
+                .setNegativeButton(
+                    "cancel"
+                ) { dialog, which -> }
+                .build()
+                .show()
+        }
     }
 }
 
