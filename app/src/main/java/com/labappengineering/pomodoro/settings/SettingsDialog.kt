@@ -6,20 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.labappengineering.pomodoro.R
 
 
-class SettingsDialog : DialogFragment() {
+class SettingsDialog : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_settings_dialog, container, false)
-        dialog!!.setTitle("Sample")
-
-
-
         return view
     }
 

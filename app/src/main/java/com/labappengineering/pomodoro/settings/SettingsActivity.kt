@@ -4,6 +4,8 @@ import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.labappengineering.pomodoro.R
@@ -14,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
 import androidx.recyclerview.widget.DividerItemDecoration
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -73,6 +75,8 @@ class SettingsActivity : AppCompatActivity() {
         sessionItems.add(SessionItem("sessionColor", sess.sessionColor, "Session Timer Color"))
         sessionItems.add(SessionItem("shortBreakColor", sess.shortBreakColor, "Short Break Timer Color"))
         sessionItems.add(SessionItem("longBreakColor", sess.longBreakColor, "Long Break Timer Color"))
+        sessionItems.add(SessionItem("repetitions", sess.repetitions.toString(), "Number of sessions per round"))
+        sessionItems.add(SessionItem("perDay", sess.perDay.toString(), "Number of rounds per day"))
         return sessionItems
     }
 
@@ -83,7 +87,9 @@ class SettingsActivity : AppCompatActivity() {
             longBreak = sessionItemList[2].value.toInt(),
             sessionColor = sessionItemList[3].value,
             shortBreakColor = sessionItemList[4].value,
-            longBreakColor = sessionItemList[5].value
+            longBreakColor = sessionItemList[5].value,
+            repetitions = sessionItemList[6].value.toInt(),
+            perDay = sessionItemList[7].value.toInt()
         )
     }
     private fun recyclerViewItemClicked(sessionItem : SessionItem ) {
@@ -95,18 +101,12 @@ class SettingsActivity : AppCompatActivity() {
 //        input.layoutParams = lp
 //        input.setText(sessionItem.value)
 //        input.inputType = InputType.TYPE_CLASS_NUMBER
-////        MaterialAlertDialogBuilder(this)
-////            .setTitle("${sessionItem.name}")
-////            .setMessage("${sessionItem.name}: ${sessionItem.value}")
-////            .setView(input)
-////            .setPositiveButton("Ok"
-////            ) { dialog, id ->
-////                Log.i("SettingsActivity", "${input.text}")
-////            }
-////            .show()
-        val fm = supportFragmentManager
-        val custom = SettingsDialog()
-        custom.show(fm, "")
+        MaterialAlertDialogBuilder(this)
+            .setTitle("${sessionItem.name}")
+            .setMessage("${sessionItem.name}: ${sessionItem.value}")
+//            .setView(SettingsDialog().view)
+            .show()
+
     }
     private fun updateUI(sess: Session?) {
     }
