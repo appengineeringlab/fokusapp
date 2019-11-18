@@ -16,6 +16,7 @@ import com.labappengineering.pomodoro.R
 import com.labappengineering.pomodoro.data.Session
 import com.labappengineering.pomodoro.main.timer.TimerStateContext
 import com.labappengineering.pomodoro.settings.SettingsActivity
+import com.labappengineering.pomodoro.util.BaseViewModel
 import com.labappengineering.pomodoro.util.Converters
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,8 +27,9 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var sessionsViewModel : SessionsViewModel
+    lateinit var viewModel : BaseViewModel<Session>
 
+    lateinit var sessionsViewModel : SessionsViewModel
     val widgets = ArrayList<View>(3)
     private val PAYPAL_ME_URI = "https://www.paypal.me/appengineeringlab"
     private val EMAIL = "labappengineering@gmail.com"
@@ -38,6 +40,9 @@ class MainActivity : AppCompatActivity() {
 
         AndroidInjection.inject(this)
 
+        sessionsViewModel = viewModel as SessionsViewModel
+
+
         setSupportActionBar(main_bap)
         main_fab.isEnabled = false
 
@@ -47,23 +52,23 @@ class MainActivity : AppCompatActivity() {
         widgets.add(main_fab)
 
 
-        sessionsViewModel.sessionsLiveData = sessionsViewModel.getAllSessions()
+        sessionsViewModel.sessionsLiveData = sessionsViewModel.getAllEntities()
         sessionsViewModel.sessionsLiveData.observe(this, Observer { sessionsList ->
             if(sessionsList != null && sessionsList.isNotEmpty()){
                 sessionsViewModel.sessionLiveData.value = sessionsList[0]
             }
         })
         sessionsViewModel.sessionLiveData.observe(this, Observer { sess ->
-            if(sessionsViewModel.sess != null && sessionsViewModel.sess != sess) {
+            if(sessionsViewModel.session != null && sessionsViewModel.session != sess) {
                 main_fab.isEnabled = false
-                sessionsViewModel.sess = sess.copy()
-                val res = sessionsViewModel.update(sessionsViewModel.sess!!)
+                sessionsViewModel.session = sess.copy()
+                val res = sessionsViewModel.update(sessionsViewModel.session!!)
                 if(res == 1) {
-                    updateUI(sessionsViewModel.sess!!)
+                    updateUI(sessionsViewModel.session!!)
                 }
                 Log.i("MainActivity", "Rezultat; $res")
-            } else if(sessionsViewModel.sess == null) {
-                sessionsViewModel.sess = sess.copy()
+            } else if(sessionsViewModel.session == null) {
+                sessionsViewModel.session = sess.copy()
                 updateUI(sess)
                 sessionsViewModel.timerStateContext =
                     TimerStateContext(widgets, sessionsViewModel.sessionLiveData)

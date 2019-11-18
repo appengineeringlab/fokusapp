@@ -1,14 +1,9 @@
 package com.labappengineering.pomodoro.settings
 
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputType
-import android.util.Log
-import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.labappengineering.pomodoro.R
@@ -22,37 +17,35 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.fragment_settings_dialog.*
 import java.lang.NumberFormatException
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import android.text.Editable
 import android.text.TextWatcher
-
-
+import com.labappengineering.pomodoro.util.BaseViewModel
 
 
 class SettingsActivity : AppCompatActivity() {
     @Inject
+    lateinit var viewModel: BaseViewModel<Session>
     lateinit var settingsViewModel: SettingsViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         AndroidInjection.inject(this)
+        settingsViewModel = viewModel as SettingsViewModel
 
-        settingsViewModel.sessionsLiveData = settingsViewModel.getAllSessions()
+        settingsViewModel.sessionsLiveData = settingsViewModel.getAllEntities()
         settingsViewModel.sessionsLiveData.observe(this, Observer { sessionsList ->
             if(sessionsList != null && sessionsList.isNotEmpty()){
                 settingsViewModel.sessionLiveData.value = sessionsList[0]
             }
         })
         settingsViewModel.sessionLiveData.observe(this, Observer { sess ->
-            if(settingsViewModel.sess != null && settingsViewModel.sess != sess) {
+            if(settingsViewModel.session != null && settingsViewModel.session != sess) {
                 main_fab.isEnabled = false
 
-            } else if(settingsViewModel.sess == null) {
-                settingsViewModel.sess = sess.copy()
-                createRecyclerView(settingsViewModel.sess!!)
+            } else if(settingsViewModel.session == null) {
+                settingsViewModel.session = sess.copy()
+                createRecyclerView(settingsViewModel.session!!)
             }
         })
         settings_btn_back.setOnClickListener {
@@ -62,10 +55,10 @@ class SettingsActivity : AppCompatActivity() {
         settingsViewModel.sessionItemLiveData.observe(this, Observer {
 //            settingsViewModel.sessionItemLiveData.value = ArrayList(it)
 //            settingsViewModel.sessionLiveData.value = sessionItemListToSession(ArrayList(it), settingsViewModel.sess!!)
-            if(settingsViewModel.sessionItemLiveData.value != null && settingsViewModel.sess != null) {
+            if(settingsViewModel.sessionItemLiveData.value != null && settingsViewModel.session != null) {
                 val session = sessionItemListToSession(
                     ArrayList(settingsViewModel.sessionItemLiveData.value!!),
-                    settingsViewModel.sess!!
+                    settingsViewModel.session!!
                 )
                 settingsViewModel.update(session)
             }
