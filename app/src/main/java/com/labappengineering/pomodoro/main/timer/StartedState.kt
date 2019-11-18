@@ -41,7 +41,7 @@ abstract class StartedState(
 
     protected open fun startCountDownTimer(progressBar: ProgressBar, stateCountDownTimer: StateCountDownTimer, textView: TextView){
 
-
+        timerStateContext.breakFinished = true
         stateCountDownTimer.countDownTimer = object : CountDownTimer(stateCountDownTimer.timeCountInMilliSeconds, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 textView.text = Converters.hmsTimeFormatter(millisUntilFinished)
@@ -66,6 +66,7 @@ abstract class StartedState(
                 }
 
                 session.value = currentSession.copy()
+                timerStateContext.breakFinished = false
                 timerStateContext.currentState = StoppedState(
                     timerStateContext,
                     widgets,

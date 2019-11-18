@@ -33,12 +33,22 @@
             android:id="@+id/settings_li_tv_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
             android:text="TextView"
             android:textColor="@color/colorAccent"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_li_tv_name"
-            android:fontFamily="sans-serif-black"
             tools:text="25 minutes"
-            android:textSize="12sp" />
+            tools:textColor="@color/colorPrimaryDark" />
+
+        <FrameLayout
+            android:id="@+id/settings_fl_color"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintStart_toEndOf="@+id/settings_li_tv_value"
+            app:layout_constraintTop_toTopOf="@+id/settings_li_tv_value">
+
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

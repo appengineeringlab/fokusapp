@@ -20,16 +20,12 @@ class BreakStartedState(
     val breakStartedStateType: BreakStartedStateType
 ) : StartedState(timerStateContext, widgets, session) {
 
-    override fun doAction() {
-        super.doAction()
-        timerStateContext.breakFinished = true
-    }
-
     override fun startCountDownTimer(
         progressBar: ProgressBar,
         stateCountDownTimer: StateCountDownTimer,
         textView: TextView
     ) {
+        timerStateContext.breakFinished = true
         stateCountDownTimer.countDownTimer = object : CountDownTimer(stateCountDownTimer.timeCountInMilliSeconds, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 textView.text = Converters.hmsTimeFormatter(millisUntilFinished)
@@ -38,13 +34,13 @@ class BreakStartedState(
             }
             override fun onFinish() {
                 val currentSession = session.value!!
-                timerStateContext.breakFinished = true
                 session.value = currentSession.copy()
                 timerStateContext.currentState = StoppedState(
                     timerStateContext,
                     widgets,
                     session)
                 (timerStateContext.currentState as StoppedState).doAction()
+
             }
 
         }.start()
