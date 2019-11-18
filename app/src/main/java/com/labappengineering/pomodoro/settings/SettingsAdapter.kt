@@ -22,7 +22,8 @@ import android.widget.Toast
 
 class SettingsAdapter(val items: MutableLiveData<List<SessionItem>>,
                       val context: Context,
-                      val clickListener: (SessionItem) -> Unit)
+                      val clickListener: (SessionItem) -> Unit,
+                      val colorClickListener: (SessionItem) -> Unit)
     : RecyclerView.Adapter<ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.settings_list_item,
@@ -62,8 +63,12 @@ class SettingsAdapter(val items: MutableLiveData<List<SessionItem>>,
                     "ok"
                 ) { dialog, selectedColor, allColors ->
                     holder.fl.setBackgroundColor(selectedColor)
-                    items.value!![position].value =
-                        String.format("#%06X", 0xFFFFFF and selectedColor)
+                    val newValue = String.format("#%06X", 0xFFFFFF and selectedColor)
+                    if(newValue !=  items.value!![position].value) {
+                        items.value!![position].value = newValue
+                        colorClickListener(items.value!![position])
+                    }
+
                 }
                 .setNegativeButton(
                     "cancel"

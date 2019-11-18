@@ -8,8 +8,13 @@ package com.labappengineering.pomodoro.settings
 data class SessionItem(
     var key: String,
     var value: String,
-    var name: String
+    var name: String,
+    var valueType: ValueType
 ){
+    enum class ValueType{
+        Int,
+        String
+    }
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
