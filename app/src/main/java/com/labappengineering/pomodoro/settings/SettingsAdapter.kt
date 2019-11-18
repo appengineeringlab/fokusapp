@@ -20,7 +20,7 @@ import android.widget.Toast
 
 
 
-class SettingsAdapter(val items: MutableLiveData<List<SessionItem>>,
+class SettingsAdapter(val items: MutableLiveData<ArrayList<SessionItem>>,
                       val context: Context,
                       val clickListener: (SessionItem) -> Unit,
                       val colorClickListener: (SessionItem) -> Unit)
@@ -43,38 +43,13 @@ class SettingsAdapter(val items: MutableLiveData<List<SessionItem>>,
         } else {
             holder.tv2.text = items.value!![position].value
         }
-        holder.itemView.setOnClickListener { clickListener(items.value!![position])}
+        holder.itemView.setOnClickListener {
+            items.value!![position].index = position
+            clickListener(items.value!![position])
+        }
         holder.fl.setOnClickListener{
-            ColorPickerDialogBuilder
-                .with(context)
-                .setTitle("Choose color")
-                .initialColor(Color.parseColor(items.value!![position].value))
-                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-                .density(12)
-                .setOnColorSelectedListener { selectedColor ->
-                    Toast.makeText(context,
-                        "Selected color: 0x" + Integer.toHexString(
-                            selectedColor
-                        ),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                .setPositiveButton(
-                    "ok"
-                ) { dialog, selectedColor, allColors ->
-                    holder.fl.setBackgroundColor(selectedColor)
-                    val newValue = String.format("#%06X", 0xFFFFFF and selectedColor)
-                    if(newValue !=  items.value!![position].value) {
-                        items.value!![position].value = newValue
-                        colorClickListener(items.value!![position])
-                    }
-
-                }
-                .setNegativeButton(
-                    "cancel"
-                ) { dialog, which -> }
-                .build()
-                .show()
+            items.value!![position].index = position
+            colorClickListener(items.value!![position])
         }
     }
 }

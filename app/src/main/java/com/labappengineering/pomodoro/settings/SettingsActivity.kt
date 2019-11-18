@@ -20,6 +20,11 @@ import com.google.android.material.textfield.TextInputLayout
 import java.lang.NumberFormatException
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import com.labappengineering.pomodoro.settings.dialog.BaseDialogStrategy
+import com.labappengineering.pomodoro.settings.dialog.ColorPickerDialogStrategy
+import com.labappengineering.pomodoro.settings.dialog.DialogFactory
+import com.labappengineering.pomodoro.settings.dialog.EditDialogStrategy
 import com.labappengineering.pomodoro.util.BaseViewModel
 
 
@@ -27,6 +32,9 @@ class SettingsActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModel: BaseViewModel<Session>
     lateinit var settingsViewModel: SettingsViewModel
+
+    private var dialogStrategy : BaseDialogStrategy? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -41,7 +49,9 @@ class SettingsActivity : AppCompatActivity() {
         })
         settingsViewModel.sessionLiveData.observe(this, Observer { sess ->
             if(settingsViewModel.session != null && settingsViewModel.session != sess) {
-                main_fab.isEnabled = false
+                settingsViewModel.session = sess.copy()
+                val itemList = sessionToSessionItemList(sess)
+                settingsViewModel.sessionItemLiveData.value = itemList
 
             } else if(settingsViewModel.session == null) {
                 settingsViewModel.session = sess.copy()
@@ -53,19 +63,13 @@ class SettingsActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
         settingsViewModel.sessionItemLiveData.observe(this, Observer {
-//            settingsViewModel.sessionItemLiveData.value = ArrayList(it)
-//            settingsViewModel.sessionLiveData.value = sessionItemListToSession(ArrayList(it), settingsViewModel.sess!!)
-            if(settingsViewModel.sessionItemLiveData.value != null && settingsViewModel.session != null) {
-                val session = sessionItemListToSession(
-                    ArrayList(settingsViewModel.sessionItemLiveData.value!!),
-                    settingsViewModel.session!!
-                )
-                settingsViewModel.update(session)
-            }
+            settingsViewModel.update(sessionItemListToSession(it, settingsViewModel.session!!))
+            Log.i("SettingsActivity", "Notifying ...")
         })
 
     }
-
+    infix fun <T> Collection<T>.sameContentWith(collection: Collection<T>?)
+            = collection?.let { this.size == it.size && this.containsAll(it) }
     private fun createRecyclerView(sess: Session) {
         val settingsValues: LinkedHashMap<String, String> = LinkedHashMap(6)
         createSessionItem(sess)
@@ -114,92 +118,20 @@ class SettingsActivity : AppCompatActivity() {
         )
     }
     private fun recyclerViewItemClicked(sessionItem : SessionItem ) {
-//        val input = EditText(this)
-//        val lp = LinearLayout.LayoutParams(
-//            LinearLayout.LayoutParams.MATCH_PARENT,
-//            LinearLayout.LayoutParams.MATCH_PARENT
-//        )
-//        input.layoutParams = lp
-//        input.setText(sessionItem.value)
-//        input.inputType = InputType.TYPE_CLASS_NUMBER
-        val settingsDialogView = layoutInflater.inflate(R.layout.fragment_settings_dialog, null);
-
-        val settingsDialog = MaterialAlertDialogBuilder(this)
-            .setView(settingsDialogView)
-            .create()
-        settingsDialog!!.show()
-        settingsDialogView!!.findViewById<MaterialButton>(R.id.settings_dialog_btn_cancel).setOnClickListener {
-            settingsDialog!!.dismiss()
-        }
-
-        val btnConfirm = settingsDialogView!!.findViewById<MaterialButton>(R.id.settings_dialog_btn_confirm)
-        val etValue =  settingsDialogView!!.findViewById<EditText>(R.id.settings_dialog_et_value)
-        val tvFieldName = settingsDialogView!!.findViewById<TextView>(R.id.settings_dialog_tv_field_name)
-        val til = settingsDialogView!!.findViewById<TextInputLayout>(R.id.settings_dialog_til)
-        til.error = ""
-        til.isErrorEnabled = false
-        tvFieldName.text = sessionItem.name
-        etValue.setText(sessionItem.value)
-        btnConfirm.isEnabled = false
-
-        fun checkValueIfNumber(newValue: String): Int?{
-            return try{
-                val number = newValue.toInt()
-                if(number != sessionItem.value.toInt()){
-                    number
-                } else {
-                    -1 // the same
-                }
-            }catch (ex: NumberFormatException){
-                null
-            }
-        }
-        etValue.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(s: Editable) {}
-
-            override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
-            ) {
-            }
-
-            override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
-            ) {
-                val retVal = checkValueIfNumber(s.toString().trim())
-                if(retVal == null || (retVal != null && retVal == -1)){
-                    btnConfirm.isEnabled = false
-                }
-                else if(retVal != null && retVal != -1){
-                    btnConfirm.isEnabled = true
-                }
-            }
-        })
-        btnConfirm.setOnClickListener {
-            val enteredText = etValue.text.toString().trim()
-            if(sessionItem.valueType == SessionItem.ValueType.Int){
-                val retVal = checkValueIfNumber(enteredText)
-                if(retVal == null || (retVal != null && retVal == -1)){
-                    til.error = "You must enter integer number."
-                    til.isErrorEnabled = true
-                }
-                else if(retVal != null && retVal != -1){
-                    val item = findItemByKey(sessionItem.key)
-                    item!!.value = retVal.toString()
-                    settingsDialog.dismiss()
-                }
-            } else if(enteredText != sessionItem.value){
-                sessionItem.value = enteredText
-                settingsDialog.dismiss()
-            }
-        }
-
+        dialogStrategy = DialogFactory.factory(
+            DialogFactory.DialogType.EDIT_DIALOG,
+            this,
+            sessionItem)
+        (dialogStrategy as EditDialogStrategy)
+            .show(settingsViewModel.sessionItemLiveData)
     }
     private fun colorChanged(sessionItem: SessionItem) {
-        val item = findItemByKey(sessionItem.key)
-        item!!.value = sessionItem.value
+        dialogStrategy = DialogFactory.factory(
+            DialogFactory.DialogType.COLOR_PICKER_DIALOG,
+            this,
+            sessionItem)
+        (dialogStrategy as ColorPickerDialogStrategy)
+            .show(settingsViewModel.sessionItemLiveData)
     }
     private fun findItemByKey(key: String) : SessionItem? {
         for(item in settingsViewModel.sessionItemLiveData.value!!){
