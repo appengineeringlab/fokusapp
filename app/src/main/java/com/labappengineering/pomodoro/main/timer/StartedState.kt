@@ -66,6 +66,7 @@ abstract class StartedState(
                 }
 
                 session.value = currentSession.copy()
+                timerStateContext.breakFinished = false
                 timerStateContext.currentState = StoppedState(
                     timerStateContext,
                     widgets,

@@ -38,13 +38,13 @@ class BreakStartedState(
             }
             override fun onFinish() {
                 val currentSession = session.value!!
-                timerStateContext.breakFinished = true
                 session.value = currentSession.copy()
                 timerStateContext.currentState = StoppedState(
                     timerStateContext,
                     widgets,
                     session)
                 (timerStateContext.currentState as StoppedState).doAction()
+                timerStateContext.breakFinished = true
             }
 
         }.start()
