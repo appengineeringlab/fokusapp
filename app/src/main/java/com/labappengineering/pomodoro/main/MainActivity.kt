@@ -14,6 +14,7 @@ import androidx.core.app.ShareCompat
 import androidx.lifecycle.Observer
 import com.labappengineering.pomodoro.R
 import com.labappengineering.pomodoro.data.Session
+import com.labappengineering.pomodoro.main.timer.ATimerState
 import com.labappengineering.pomodoro.main.timer.TimerStateContext
 import com.labappengineering.pomodoro.settings.SettingsActivity
 import com.labappengineering.pomodoro.util.BaseViewModel
@@ -87,6 +88,11 @@ class MainActivity : AppCompatActivity() {
         )
         main_tv_repetitions.text = "${session.currentRepetition} / ${session.repetitions}"
         main_tv_sessions.text = "${session.currentSessionPerDay} / ${session.perDay}"
+        if(sessionsViewModel.timerStateContext != null) {
+            sessionsViewModel.timerStateContext!!.resetProgresBarUI(
+                sessionsViewModel.timerStateContext!!.currentState as ATimerState
+            )
+        }
     }
 
 
@@ -130,6 +136,16 @@ class MainActivity : AppCompatActivity() {
             }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sessionsViewModel.sessionsLiveData = sessionsViewModel.getAllEntities()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        sessionsViewModel.sessionsLiveData = sessionsViewModel.getAllEntities()
     }
 
 }

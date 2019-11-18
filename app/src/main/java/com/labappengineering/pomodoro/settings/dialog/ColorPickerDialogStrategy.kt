@@ -8,16 +8,23 @@ import androidx.lifecycle.MutableLiveData
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
 import com.labappengineering.pomodoro.settings.SessionItem
+import java.lang.Exception
 
 class ColorPickerDialogStrategy (
     activity: Activity,
     sessionItem: SessionItem
 )   : BaseDialogStrategy(activity, sessionItem){
     override fun show(items: MutableLiveData<ArrayList<SessionItem>>) {
+        var initialColor: Int = Color.parseColor("#FFFFFF")
+        try{
+            initialColor = Color.parseColor(sessionItem.value)
+        } catch(ex: Exception){
+
+        }
         ColorPickerDialogBuilder
             .with(activity)
             .setTitle("Choose color")
-            .initialColor(Color.parseColor(sessionItem.value))
+            .initialColor(initialColor)
             .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
             .density(12)
             .setOnColorSelectedListener { selectedColor ->
