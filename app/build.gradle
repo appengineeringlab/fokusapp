@@ -111,4 +111,6 @@ dependencies {
     // recycler view
     implementation "com.android.support:recyclerview-v7:$rootProject.supportLibrary"
 
+    // color picker
+    implementation 'com.github.QuadFlask:colorpicker:0.0.15'
 }
