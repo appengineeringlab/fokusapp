@@ -1,4 +1,4 @@
-Pomodoro App
+Fokus App
 ==================
 
 The pomodoro app is part of my *#1App1Month* challenge where I try to learn android by creating one application per month.\
@@ -28,7 +28,7 @@ I have used:
 ## Fokus App
 <img src="https://drive.google.com/uc?export=view&id=1HLT0LWfQl3fi5rcNPPcYRWlLcpzm9pU6" alt="Pomodoro-App" width="216px" height="444px">
 
-Pomodoro app is simple time tracker you can use to achieve your daily goals. You have sessions, usually 25 minutes long, after each session you have short break usually 5 minitues long, and for example 4 sessions creates one round after which you can have long break which is usually as long as one session. You are able to set how many sessions you want, how many rounds, length of session and each break.\
+Fokus app is simple time tracker you can use to achieve your daily goals. You have sessions, usually 25 minutes long, after each session you have short break usually 5 minitues long, and for example 4 sessions creates one round after which you can have long break which is usually as long as one session. You are able to set how many sessions you want, how many rounds, length of session and each break.\
 In the menu their is Settings option that is used for tweaking all mentioned above.\
 There is also support developers menu option which opens web browser and leads to paypal.me page.\
 The last option in menu is contact which opens email app for sending message to [appengineeringlab](http://www.labappengineering.com).
