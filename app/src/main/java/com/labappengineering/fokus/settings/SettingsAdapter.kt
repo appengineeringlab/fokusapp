@@ -2,6 +2,7 @@ package com.labappengineering.fokus.settings
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.labappengineering.fokus.R
 
 import kotlinx.android.synthetic.main.settings_list_item.view.*
+import java.lang.Exception
 
 
 class SettingsAdapter(val items: MutableLiveData<ArrayList<SessionItem>>,
@@ -30,7 +32,11 @@ class SettingsAdapter(val items: MutableLiveData<ArrayList<SessionItem>>,
         holder.tv1.text = items.value!![position].name
 
         if(items.value!![position].name.toLowerCase().contains("color")){
-            holder.fl.setBackgroundColor(Color.parseColor(items.value!![position].value))
+            try {
+                holder.fl.setBackgroundColor(Color.parseColor(items.value!![position].value))
+            }catch (ex: Exception){
+                Log.w("SettingsAdapter", "Couldn't set color of fl.")
+            }
             holder.tv2.text = ""
         } else {
             holder.tv2.text = items.value!![position].value

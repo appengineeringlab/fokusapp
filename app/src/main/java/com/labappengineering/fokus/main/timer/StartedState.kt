@@ -9,12 +9,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.labappengineering.fokus.R
 import com.labappengineering.fokus.data.Session
 import com.labappengineering.fokus.util.Converters
-
+// TODO: onfinish() is different, use callbacks, template method, higher-order functions...
+// TODO: So manu methods for solving this, do not override the whole method
 abstract class StartedState(
     timerStateContext: TimerStateContext,
     widgets: List<View>,
     session: MutableLiveData<Session>
-) : ATimerState(timerStateContext, widgets, session){
+) : BaseTimerState(timerStateContext, widgets, session){
     override fun doAction() {
         val stateCountDownTimer = timerStateContext.stateCountDownTimer
         var progressBar: ProgressBar?

@@ -8,7 +8,7 @@ class StoppedState(
     timerStateContext: TimerStateContext,
     widgets: List<View>,
     session: MutableLiveData<Session>
-) : ATimerState(timerStateContext, widgets, session) {
+) : BaseTimerState(timerStateContext, widgets, session) {
     override fun doAction() {
         val stateCountDownTimer =timerStateContext.stateCountDownTimer
         if(stateCountDownTimer.countDownTimer != null) {

@@ -7,8 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.labappengineering.fokus.data.Session
 import com.labappengineering.fokus.util.Converters
-
-abstract class ATimerState(
+abstract class BaseTimerState(
     protected val timerStateContext: TimerStateContext,
     protected val widgets: List<View>,
     protected val session: MutableLiveData<Session>

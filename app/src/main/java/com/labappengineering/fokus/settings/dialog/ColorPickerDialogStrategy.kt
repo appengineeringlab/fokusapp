@@ -17,41 +17,42 @@ class ColorPickerDialogStrategy (
         var initialColor: Int = Color.BLACK
         try{
             initialColor = Color.parseColor(sessionItem.value)
+            ColorPickerDialogBuilder
+                .with(activity)
+                .setTitle("Choose color")
+                .initialColor(initialColor)
+                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                .density(12)
+                .setOnColorSelectedListener { selectedColor ->
+                    val newValue = String.format("#%06X", 0xFFFFFF and selectedColor)
+                    if(newValue !=  sessionItem.value) {
+                        sessionItem.value = newValue
+                        updateLiveData(sessionItem, items)
+                        Log.i("ColorPicker", "Picked new color: $newValue")
+                    }
+                }
+                .setPositiveButton(
+                    "ok"
+                ) { dialog, selectedColor, allColors ->
+                    Log.i("ColorPicker", "Usao u positive")
+                    // holder.fl.setBackgroundColor(selectedColor)
+                    val newValue = String.format("#%06X", 0xFFFFFF and selectedColor)
+                    if(newValue !=  sessionItem.value) {
+                        sessionItem.value = newValue
+                        updateLiveData(sessionItem, items)
+                        Log.i("ColorPicker", "Picked new color: $newValue")
+                    }
+                    dialog.dismiss()
+                }
+                .setNegativeButton(
+                    "cancel"
+                ) { dialog, which -> }
+                .build()
+                .show()
         } catch(ex: Exception){
-
+            Log.i("ColorPickerDialog", "Couldn't parse color.")
+            return
         }
-        ColorPickerDialogBuilder
-            .with(activity)
-            .setTitle("Choose color")
-            .initialColor(initialColor)
-            .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-            .density(12)
-            .setOnColorSelectedListener { selectedColor ->
-                val newValue = String.format("#%06X", 0xFFFFFF and selectedColor)
-                if(newValue !=  sessionItem.value) {
-                    sessionItem.value = newValue
-                    updateLiveData(sessionItem, items)
-                    Log.i("ColorPicker", "Picked new color: $newValue")
-                }
-            }
-            .setPositiveButton(
-                "ok"
-            ) { dialog, selectedColor, allColors ->
-                Log.i("ColorPicker", "Usao u positive")
-                // holder.fl.setBackgroundColor(selectedColor)
-                val newValue = String.format("#%06X", 0xFFFFFF and selectedColor)
-                if(newValue !=  sessionItem.value) {
-                    sessionItem.value = newValue
-                    updateLiveData(sessionItem, items)
-                    Log.i("ColorPicker", "Picked new color: $newValue")
-                }
-                dialog.dismiss()
-            }
-            .setNegativeButton(
-                "cancel"
-            ) { dialog, which -> }
-            .build()
-            .show()
 
     }
 

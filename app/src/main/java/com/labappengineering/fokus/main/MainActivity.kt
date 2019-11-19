@@ -14,7 +14,7 @@ import androidx.core.app.ShareCompat
 import androidx.lifecycle.Observer
 import com.labappengineering.fokus.R
 import com.labappengineering.fokus.data.Session
-import com.labappengineering.fokus.main.timer.ATimerState
+import com.labappengineering.fokus.main.timer.BaseTimerState
 import com.labappengineering.fokus.main.timer.TimerStateContext
 import com.labappengineering.fokus.settings.SettingsActivity
 import com.labappengineering.fokus.util.BaseViewModel
@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
         sessionsViewModel.sessionLiveData.observe(this, Observer { sess ->
+            // TODO: Messy! Crying for refactoring. Use LiveData with caution in future projects.
             if(sessionsViewModel.session != null && sessionsViewModel.session != sess) {
                 main_fab.isEnabled = false
                 sessionsViewModel.session = sess.copy()
@@ -90,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         main_tv_sessions.text = "${session.currentSessionPerDay} / ${session.perDay}"
         if(sessionsViewModel.timerStateContext != null) {
             sessionsViewModel.timerStateContext!!.resetProgresBarUI(
-                sessionsViewModel.timerStateContext!!.currentState as ATimerState
+                sessionsViewModel.timerStateContext!!.currentState as BaseTimerState
             )
         }
     }

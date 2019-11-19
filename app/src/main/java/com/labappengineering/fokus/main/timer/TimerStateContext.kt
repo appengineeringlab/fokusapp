@@ -13,7 +13,7 @@ import android.graphics.drawable.ColorDrawable
 
 
 
-
+// TODO: Doing too much stuff, Single responsibility... refactor this!
 class TimerStateContext(
     private val widgets: List<View>,
     private val session: MutableLiveData<Session>
@@ -71,7 +71,7 @@ class TimerStateContext(
     }
 
     @Suppress("DEPRECATION")
-    fun resetProgresBarUI(state: ATimerState){
+    fun resetProgresBarUI(state: BaseTimerState){
         val progressBar = state.findProgressBar(widgets)
         val textView = state.findTextView(widgets)
         val fab = state.findFab(widgets)

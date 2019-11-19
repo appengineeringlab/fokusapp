@@ -17,6 +17,7 @@ import com.labappengineering.fokus.settings.dialog.ColorPickerDialogStrategy
 import com.labappengineering.fokus.settings.dialog.DialogFactory
 import com.labappengineering.fokus.settings.dialog.EditDialogStrategy
 import com.labappengineering.fokus.util.BaseViewModel
+import java.lang.Exception
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -42,6 +43,7 @@ class SettingsActivity : AppCompatActivity() {
             if(settingsViewModel.session != null && settingsViewModel.session != sess) {
                 settingsViewModel.session = sess.copy()
                 val itemList = sessionToSessionItemList(sess)
+                // TODO: Note to myself: Really? Heard about adapter.notify ? So messy
                 settings_rv_container.adapter = null
                 createRecyclerView(settingsViewModel.session!!)
             } else if(settingsViewModel.session == null) {
@@ -85,6 +87,7 @@ class SettingsActivity : AppCompatActivity() {
         val sessionItems = sessionToSessionItemList(sess)
         settingsViewModel.sessionItemLiveData.value = sessionItems
     }
+    // TODO: Note to myself for the next two functions: Heard about reflection?
     private fun sessionToSessionItemList(sess: Session) : ArrayList<SessionItem> {
         val sessionItems: ArrayList<SessionItem> = ArrayList(6)
         sessionItems.add(SessionItem("length", sess.length.toString(), "Session Length", SessionItem.ValueType.Int))
@@ -109,6 +112,7 @@ class SettingsActivity : AppCompatActivity() {
             repetitions = sessionItemList[6].value.toInt(),
             perDay = sessionItemList[7].value.toInt()
         )
+        return sess
     }
     private fun recyclerViewItemClicked(sessionItem : SessionItem ) {
         dialogStrategy = DialogFactory.factory(
@@ -125,6 +129,7 @@ class SettingsActivity : AppCompatActivity() {
             sessionItem)
         (dialogStrategy as ColorPickerDialogStrategy)
             .show(settingsViewModel.sessionItemLiveData)
+
     }
     private fun findItemByKey(key: String) : SessionItem? {
         for(item in settingsViewModel.sessionItemLiveData.value!!){

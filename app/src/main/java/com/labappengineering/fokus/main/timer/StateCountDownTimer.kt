@@ -1,8 +1,9 @@
 package com.labappengineering.fokus.main.timer
 
 import android.os.CountDownTimer
+import com.labappengineering.fokus.util.Converters
 
 data class StateCountDownTimer(
-    var timeCountInMilliSeconds: Long = (1 * 60000).toLong(),
+    var timeCountInMilliSeconds: Long = Converters.minutesToMilliseconds(1),
     var countDownTimer: CountDownTimer? = null
 )

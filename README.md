@@ -13,7 +13,11 @@ If you would like to support me consider [grabbing a coffe
 - [License](#license)
 
 ## More about challenge
-The challenge should last 3-6 months and provide the same amount of applications finished and published on the play store. I should learn all the important concepts that android is offering and be able to apply them efficiently in new situations. Every application should introduce some new concepts, so not all the apps will have everything, for example, some apps won't have tests, some apps won't have local database, others won't have network access, etc. 
+The challenge should last 3-6 months and provide the same amount of applications finished and published on the play store. I should learn all the important concepts that android is offering and be able to apply them efficiently in new situations. Every application should introduce some new concepts, so not all the apps will have everything, for example, some apps won't have tests, some apps won't have local database, others won't have network access, etc. \
+<img src="https://png2.cleanpng.com/sh/fa3d7f52f3b32969acd6d29397edb912/L0KzQYi4UsE5N2c7TZGAYUO7QYXqg8I2bmM5SZCBOEi2SYi3VcE2OWQ7SqYCOEC0RYa8TwBvbz==/5a3814cc25f241.6883970515136247801555.png" alt="alt text" width="8px" height="16px">
+<img src="https://png2.cleanpng.com/sh/fa3d7f52f3b32969acd6d29397edb912/L0KzQYi4UsE5N2c7TZGAYUO7QYXqg8I2bmM5SZCBOEi2SYi3VcE2OWQ7SqYCOEC0RYa8TwBvbz==/5a3814cc25f241.6883970515136247801555.png" alt="alt text" width="8px" height="16px">
+<img src="https://png2.cleanpng.com/sh/fa3d7f52f3b32969acd6d29397edb912/L0KzQYi4UsE5N2c7TZGAYUO7QYXqg8I2bmM5SZCBOEi2SYi3VcE2OWQ7SqYCOEC0RYa8TwBvbz==/5a3814cc25f241.6883970515136247801555.png" alt="alt text" width="8px" height="16px"> If you are easily triggered on bad database design, lack of formal testing, over architecturing things than watching code in these repos probably isn't a good idea, since focus is more on learning kotlin and android, and some things will be made *just to work*. I will give my best to keep it as clean as I can.
+
 
 ## Technologies and concepts used
 I have used:
