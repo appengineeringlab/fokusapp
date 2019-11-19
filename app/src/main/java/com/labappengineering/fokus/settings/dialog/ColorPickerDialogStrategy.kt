@@ -14,7 +14,7 @@ class ColorPickerDialogStrategy (
     sessionItem: SessionItem
 )   : BaseDialogStrategy(activity, sessionItem){
     override fun show(items: MutableLiveData<ArrayList<SessionItem>>) {
-        var initialColor: Int = Color.parseColor("#FFFFFF")
+        var initialColor: Int = Color.BLACK
         try{
             initialColor = Color.parseColor(sessionItem.value)
         } catch(ex: Exception){
