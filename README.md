@@ -1,4 +1,4 @@
-Fokus App
+Fokus App    [<img src="https://www.androidpolice.com/wp-content/uploads/2017/05/nexus2cee_ic_launcher_play_store_new-1.png" alt="fokus app" width="24px" height="24px">](https://play.google.com/store/apps/details?id=com.labappengineering.fokus)
 ==================
 
 The pomodoro app is part of my *#1App1Month* challenge where I try to learn android by creating one application per month.\
